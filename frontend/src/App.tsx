@@ -1,8 +1,8 @@
 import "./App.css";
-import { TodoList } from "./components/todo/todolist";
+import { TodoListContainer } from "./components/todo/todolist-container";
 
 function App() {
-  return <TodoList />;
+  return <TodoListContainer />;
 }
 
 export default App;

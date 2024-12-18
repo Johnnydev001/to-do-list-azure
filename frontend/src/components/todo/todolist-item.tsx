@@ -1,24 +1,23 @@
 import { Trash } from "lucide-react";
-import { TodoListItemType } from "./todolist-container";
 
 export const TodoListItem = ({
   text = "",
-  checked = false,
   id = "",
-}: TodoListItemType) => {
+  handleRemoveTodoListItem = () => {},
+}: {
+  text: string;
+  id: string;
+  handleRemoveTodoListItem: (id: string) => void;
+}) => {
   return (
-    <article className="">
-      <input
-        type="checkbox"
-        name="todo-list-item-checkbox"
-        id="todo-list-item-checkbox"
-        checked={checked}
-        onChange={() => {}}
-      />
+    <article className="items-center flex justify-between w-full">
+      <span className="text-sm">{text}</span>
 
-      <label htmlFor="todo-list-item-checkbox"> {text}</label>
-      <button className="self-end sm:self-auto" onClick={() => {}}>
-        <Trash classNamew-4 h-4 />
+      <button
+        className="self-end sm:self-auto hover:bg-gray-100 p-2"
+        onClick={() => handleRemoveTodoListItem(id)}
+      >
+        <Trash color="red" className={"w-4 h-4"} />
       </button>
     </article>
   );

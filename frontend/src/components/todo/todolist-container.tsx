@@ -79,7 +79,7 @@ export const TodoListContainer = () => {
       {todoList.length > 0 && (
         <button
           onClick={handleDeleteAll}
-          className="mt-6 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
+          className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
         >
           <Trash2 role="button" className="w-4 h-4 mr-2" />
           Delete all

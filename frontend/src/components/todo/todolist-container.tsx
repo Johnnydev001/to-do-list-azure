@@ -51,7 +51,10 @@ export const TodoListContainer = () => {
     <section className="min-h-screen bg-gray-100 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold mb-4 text-center">TO DO LIST</h1>
 
-      <div className="max-w-sm w-full flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
+      <form
+        className="max-w-sm w-full flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2"
+        action="handleAddClick"
+      >
         <input
           type="text"
           name="todo-list-text-input"
@@ -69,7 +72,7 @@ export const TodoListContainer = () => {
           <PlusCircle role="button" className="w-4 h-4 mr-2" />
           Add
         </button>
-      </div>
+      </form>
 
       <TodoListView
         todoList={todoList}

@@ -24,7 +24,7 @@ export const TodoListView = ({
   };
 
   return (
-    <ul className="grid space-y-2 max-w-sm w-full max-h-96 overflow-y-auto">
+    <ul className="grid space-y-2 max-w-sm w-full max-h-56 overflow-y-auto">
       {renderTodoListItems()}
     </ul>
   );

@@ -1,4 +1,4 @@
-import { PlusCircle, Trash, Trash2 } from "lucide-react";
+import { PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";

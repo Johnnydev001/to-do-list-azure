@@ -1,16 +1,47 @@
 package com.example.backend.services
 
+import com.example.backend.models.TodoModel
 import org.springframework.stereotype.Service
-import com.example.backend.models.TodoListModel
 
 @Service
 class TodoListService() {
 
+    var todosList: MutableList<TodoModel> = createTodos()
 
-    fun getAllTodos(): List<TodoListModel> {
-        val todoList: TodoListModel = TodoListModel()
+    fun createTodos(): MutableList<TodoModel> {
 
-        return listOf(todoList)
+        var todoList: MutableList<TodoModel> = mutableListOf<TodoModel>()
+
+        for (i in 1..20) {
+            val todo = TodoModel(id = i.toString(), "test for ${i.toString()}")
+
+            todoList.add(todo)
+        }
+        return todoList
     }
 
+    fun createOrUpdateTodo(todo: TodoModel) {
+        try {
+            todosList.add(todo)
+        } catch (ex: Exception) {
+            println("Failed to create or update new todo due to ${ex.message}")
+        }
+    }
+
+    fun getAllTodos(): MutableList<TodoModel> {
+
+        return todosList
+    }
+
+    fun deleteTodoById(id: String): String {
+
+        return try {
+            todosList.filter { it.id != id }
+            "Deleted todo with id ${id} with success"
+        } catch (ex: Exception) {
+            println("Error deleting todo due to ${ex.message}")
+
+            "Error deleting todo due to ${ex.message}"
+        }
+    }
 }

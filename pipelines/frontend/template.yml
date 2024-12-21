@@ -3,7 +3,7 @@ trigger:
   - dev
 
 pool:
-  vmImage: "ubuntu-latest"
+  vmImage: self-agent-pool
 
 stages:
   - stage: build

@@ -14,8 +14,9 @@ jobs:
     displayName: Publish artifact
     dependsOn: build_app
     steps:
-      - task: PublishBuildArtifact@1
+      - task: PublishBuildArtifacts@1
         displayName: Copy build result to Artifact Staging directory
         inputs:
           PathToPublish: "$(Build.ArtifactStagingDirectory)"
           ArtifactName: drop
+          publishLocation: Container

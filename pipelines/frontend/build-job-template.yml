@@ -7,9 +7,6 @@ jobs:
         inputs:
           versionSpec: "18.x"
 
-      - script: npm i
-        displayName: Install dependencies
-
       - script: npm run build
         displayName: Run build
 
@@ -17,13 +14,8 @@ jobs:
     displayName: Publish artifact
     dependsOn: build_app
     steps:
-      - task: CopyFiles@2
-        displayName: Copy build result to Artifact staging directory
+      - task: PublishBuildArtifact@1
+        displayName: Copy build result to Artifact Staging directory
         inputs:
-          contents: /dist
-          targetFolder: $(System.DefaultWorkingDirectory)/frontend
-
-      - task: PublishPipelineArtifact@1
-        inputs:
-          targetPath: $(System.DefaultWorkingDirectory)/frontend/dist
-          artifactName: dist
+          PathToPublish: "$(Build.ArtifactStagingDirectory)"
+          ArtifactName: drop

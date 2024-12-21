@@ -13,7 +13,8 @@ stages:
     displayName: Build application
     jobs:
       - template: ./build-job-template.yml
-      parameters: $(frontendFolderDirectory)
+        parameters:
+          frontendFolderDirectory: $(frontendFolderDirectory)
   # - stage: deploy
   #   displayName: Deploy to Azure
   #   jobs:

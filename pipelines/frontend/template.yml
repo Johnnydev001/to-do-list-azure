@@ -1,0 +1,13 @@
+# Main frontend template
+trigger:
+  - dev
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: build
+    displayName: Build
+    jobs:
+      - template: ./build-job-template.yml
+      - template: ./deploy-job-template.yml

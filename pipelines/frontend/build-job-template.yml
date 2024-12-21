@@ -1,3 +1,7 @@
+parameters:
+  - name: frontendFolderDirectory
+    type: string
+
 jobs:
   - job: build_app
     displayName: Build application
@@ -9,6 +13,7 @@ jobs:
 
       - script: npm run build
         displayName: Run build
+        workingDirectory: ${{ parameters.frontendFolderDirectory }}
 
   - job: publish_artifact
     displayName: Publish artifact
@@ -17,6 +22,6 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: Copy build result to Artifact Staging directory
         inputs:
-          PathToPublish: "$(Build.ArtifactStagingDirectory)"
+          PathToPublish: "${{ parameters.frontendFolderDirectory }}/dist"
           ArtifactName: drop
           publishLocation: Container

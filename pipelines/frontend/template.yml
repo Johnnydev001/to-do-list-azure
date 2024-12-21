@@ -5,11 +5,15 @@ trigger:
 pool:
   name: "self-agent-pool"
 
+variables:
+  frontendFolderDirectory: "$(System.DefaultWorkingDirectory)/../../frontend"
+
 stages:
   - stage: build
     displayName: Build application
     jobs:
       - template: ./build-job-template.yml
+      parameters: $(frontendFolderDirectory)
   # - stage: deploy
   #   displayName: Deploy to Azure
   #   jobs:

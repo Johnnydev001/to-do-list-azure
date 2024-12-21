@@ -3,7 +3,7 @@ trigger:
   - dev
 
 pool:
-  vmImage: self-agent-pool
+  name: "self-agent-pool"
 
 stages:
   - stage: build

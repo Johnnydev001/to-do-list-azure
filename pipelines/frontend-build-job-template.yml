@@ -1,0 +1,27 @@
+jobs:
+  - job: build_app
+    displayName: Build application
+    steps:
+      - task: NodeTool@0
+        displayName: "Install Node 18"
+        inputs:
+          versionSpec: "18.x"
+
+      - script: |
+          npm ci
+          npm run build
+        displayName: Run build
+
+  - job: publish_artifact
+    displayName: Publish artifact
+    steps:
+      - task: CopyFiles@
+        displayName: Copy build result to Artifact staging directory
+        inputs:
+          contents: /dist
+          targetFolder: $(System.DefaultWorkingDirectory)/frontend
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: $(System.DefaultWorkingDirectory)/frontend/dist
+          artifactName: dist

@@ -14,6 +14,7 @@ jobs:
 
   - job: publish_artifact
     displayName: Publish artifact
+    dependsOn: build_app
     steps:
       - task: CopyFiles@2
         displayName: Copy build result to Artifact staging directory

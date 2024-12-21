@@ -15,7 +15,7 @@ jobs:
   - job: publish_artifact
     displayName: Publish artifact
     steps:
-      - task: CopyFiles@
+      - task: CopyFiles@2
         displayName: Copy build result to Artifact staging directory
         inputs:
           contents: /dist

@@ -22,5 +22,5 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: Copy build result to Artifact Staging directory
         inputs:
-          PathToPublish: dist
+          PathToPublish: "frontend/dist"
           ArtifactName: drop

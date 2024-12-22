@@ -11,6 +11,12 @@ jobs:
         inputs:
           versionSpec: "18.x"
 
+      - script: |
+          echo "Working directory"
+          echo "$(System.DefaultWorkingDirectory)"
+          ls -la
+          ls -R
+
       - script: npm run build
         displayName: Run build
         workingDirectory: ${{ parameters.frontendFolderDirectory }}
@@ -24,4 +30,3 @@ jobs:
         inputs:
           PathToPublish: "${{ parameters.frontendFolderDirectory }}/dist"
           ArtifactName: drop
-          publishLocation: Container

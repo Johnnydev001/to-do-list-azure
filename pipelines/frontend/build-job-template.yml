@@ -14,12 +14,11 @@ jobs:
       - script: |
           echo "Working directory"
           echo "$(System.DefaultWorkingDirectory)"
-          ls -la
-          ls -R
+          echo "${{ parameters.frontendFolderDirectory }}"
+          echo "${pwd}"
 
       - script: npm run build
         displayName: Run build
-        workingDirectory: ${{ parameters.frontendFolderDirectory }}
 
   - job: publish_artifact
     displayName: Publish artifact

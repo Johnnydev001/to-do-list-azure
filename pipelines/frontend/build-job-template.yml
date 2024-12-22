@@ -15,10 +15,11 @@ jobs:
           echo "Working directory"
           echo "$(System.DefaultWorkingDirectory)"
           echo "${{ parameters.frontendFolderDirectory }}"
-          echo "${pwd}"
+          echo "$(pwd)"
 
       - script: npm run build
         displayName: Run build
+        workingDirectory: "frontend"
 
   - job: publish_artifact
     displayName: Publish artifact

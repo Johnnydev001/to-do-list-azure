@@ -11,11 +11,9 @@ jobs:
         inputs:
           versionSpec: "18.x"
 
-      - script: |
-          echo "Working directory"
-          echo "$(System.DefaultWorkingDirectory)"
-          echo "${{ parameters.frontendFolderDirectory }}"
-          echo "$(pwd)"
+      - script: npm i
+        displayName: Install dependencies
+        workingDirectory: "frontend"
 
       - script: npm run build
         displayName: Run build

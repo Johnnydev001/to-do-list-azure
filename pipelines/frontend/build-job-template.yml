@@ -1,7 +1,3 @@
-parameters:
-  - name: frontendFolderDirectory
-    type: string
-
 jobs:
   - job: build_app
     displayName: Build application
@@ -26,5 +22,5 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: Copy build result to Artifact Staging directory
         inputs:
-          PathToPublish: "${{ parameters.frontendFolderDirectory }}/dist"
+          PathToPublish: dist
           ArtifactName: drop

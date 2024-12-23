@@ -1,0 +1,17 @@
+jobs:
+  - job: build_app
+    displayName: Build application
+    steps:
+      - task: Gradle@3
+        displayName: Build with Gradlew
+        inputs:
+          gradleWrapperFile: "backend/gradlew"
+          tasks: "build"
+          workingDirectory: backend
+
+      - task: PublishBuildArtifacts@1
+        displayName: Publish artifact
+        inputs:
+          PathtoPublish: "backend/build/libs"
+          ArtifactName: "drop"
+          publishLocation: "Container"

@@ -1,0 +1,11 @@
+trigger: 
+  - dev
+
+pool:
+  name: "self-agent-pool"
+
+stages:
+  - stage: build
+  displayName: Build
+  jobs:
+    - template: build-job-template.yml

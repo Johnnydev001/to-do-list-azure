@@ -1,0 +1,20 @@
+jobs:
+  - job: deploy_app
+    displayName: Deploy to Azure
+    steps:
+      - task: AzureCLI@2
+        displayName: Login to Azure Container Registry
+        inputs:
+          azureSubscription: $(azureSubscription)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az acr login -n $(azureContainerRegistryServer)
+
+      - task: Docker@2
+        displayName: Build and push Docker image
+        inputs:
+          command: buildAndPush
+          Dockerfile: backend/dockerfile
+          tags: "$(Build.BuildId)"
+          repository: $(azureContainerRegistryServer)

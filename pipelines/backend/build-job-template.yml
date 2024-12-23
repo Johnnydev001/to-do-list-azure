@@ -13,5 +13,5 @@ jobs:
         displayName: Publish artifact
         inputs:
           PathtoPublish: "backend/build/libs"
-          ArtifactName: "drop"
-          publishLocation: "Container"
+          ArtifactName: drop
+          publishLocation: Container

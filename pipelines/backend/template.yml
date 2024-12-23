@@ -10,8 +10,19 @@ trigger:
 pool:
   name: "self-agent-pool"
 
+variables:
+  azureSubscription: "Training subscription"
+  azureContainerRegistryServer: "todolistazureacr.azurecr.io"
+  dockerImageName: todolistbackend
+  azureContainerRegistryRepo: "$(azureContainerRegistryServer)/$(dockerImageName):$(Build.BuildId)"
+
 stages:
   - stage: build
-    displayName: Build
+    displayName: Build application
     jobs:
       - template: build-job-template.yml
+
+  - stage: deploy
+    displayName: Deploy to Azure
+    jobs:
+      - template: deploy-job-template.yml

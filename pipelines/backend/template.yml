@@ -11,7 +11,7 @@ pool:
   name: "self-agent-pool"
 
 variables:
-  azureSubscription: 21349f35-6fe1-47b3-abb3-14bb3b244c7c
+  azureResourceManagerServiceConnection: "ARM service connection"
   azureContainerRegistryServer: "todolistazureacr.azurecr.io"
   dockerImageName: todolistbackend
   azureContainerRegistryRepo: "$(azureContainerRegistryServer)/$(dockerImageName):$(Build.BuildId)"

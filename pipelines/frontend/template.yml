@@ -1,7 +1,11 @@
 # Main frontend template
 trigger:
-  - dev
-
+  branches:
+    include: 
+      - dev
+  paths:
+    include:
+      - frontend
 pool:
   name: "self-agent-pool"
 

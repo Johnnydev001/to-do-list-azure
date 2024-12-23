@@ -1,5 +1,11 @@
-trigger: 
-  - dev
+# Main backend template
+trigger:
+  branches:
+    include: 
+      - dev
+  paths:
+    include:
+      - backend
 
 pool:
   name: "self-agent-pool"

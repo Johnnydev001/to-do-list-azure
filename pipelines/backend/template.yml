@@ -1,7 +1,7 @@
 # Main backend template
 trigger:
   branches:
-    include: 
+    include:
       - dev
   paths:
     include:
@@ -12,6 +12,6 @@ pool:
 
 stages:
   - stage: build
-  displayName: Build
-  jobs:
-    - template: build-job-template.yml
+    displayName: Build
+    jobs:
+      - template: build-job-template.yml

@@ -5,8 +5,8 @@ trigger:
       - dev
   paths:
     include:
-      - pipelines/frontend
-      - frontend
+      - pipelines/frontend/*
+      - frontend/*
 pool:
   name: "self-agent-pool"
 

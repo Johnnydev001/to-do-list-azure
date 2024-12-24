@@ -5,8 +5,8 @@ trigger:
       - dev
   paths:
     include:
-      - pipelines/backend
-      - backend
+      - pipelines/backend/*
+      - backend/*
 
 pool:
   name: "self-agent-pool"

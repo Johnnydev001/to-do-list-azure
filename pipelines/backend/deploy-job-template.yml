@@ -2,11 +2,13 @@ jobs:
   - job: deploy_app
     displayName: Deploy to Azure
     steps:
-
       - script: |
-          curl -L https://aka.ms/InstallAzureCli | bash
-        displayName: Install Azure CLi
-        
+          curl -sL https://aka.ms/InstallAzureCLI | bash
+          echo "export PATH=\$PATH:\$HOME/.azure/bin" >> ~/.bashrc # Make persistent
+          source ~/.bashrc # Apply change to current session
+          az --version
+        displayName: "Install Azure CLI"
+
       - task: AzureCLI@2
         displayName: Login to Azure Container Registry
         inputs:

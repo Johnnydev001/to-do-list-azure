@@ -26,4 +26,9 @@ class TodoListController(private val todoListService: TodoListService) {
     fun deleteTodoById(@PathVariable("id") id: String = ""): String {
         return todoListService.deleteTodoById(id)
     }
+
+    @DeleteMapping("/deleteTodos")
+    fun deleteAllTodos() {
+        return todoListService.deleteAllTodos()
+    }
 }

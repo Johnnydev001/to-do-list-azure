@@ -44,4 +44,12 @@ class TodoListService() {
             "Error deleting todo due to ${ex.message}"
         }
     }
+
+    fun deleteAllTodos() {
+        try {
+            
+        } catch (ex: Exception) {
+            println("Failed to delete all todos due to ${ex.message}")
+        }
+    }
 }

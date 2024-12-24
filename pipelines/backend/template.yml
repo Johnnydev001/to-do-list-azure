@@ -5,6 +5,7 @@ trigger:
       - dev
   paths:
     include:
+      - pipelines/backend
       - backend
 
 pool:

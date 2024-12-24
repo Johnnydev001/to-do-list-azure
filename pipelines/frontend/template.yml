@@ -1,10 +1,11 @@
 # Main frontend template
 trigger:
   branches:
-    include: 
+    include:
       - dev
   paths:
     include:
+      - pipelines/frontend
       - frontend
 pool:
   name: "self-agent-pool"

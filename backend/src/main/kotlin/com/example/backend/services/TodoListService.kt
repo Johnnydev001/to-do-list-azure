@@ -20,9 +20,13 @@ class TodoListService() {
         return todoList
     }
 
-    fun createOrUpdateTodo(todo: TodoModel) {
+    fun createOrUpdateTodo(id: String, reqBody: TodoModel) {
         try {
-            todosList.add(todo)
+            // Find todo by id
+            // If exists, update/replace
+            // If not, add
+            // Use reqBody info
+            todosList.add(reqBody)
         } catch (ex: Exception) {
             println("Failed to create or update new todo due to ${ex.message}")
         }
@@ -46,9 +50,7 @@ class TodoListService() {
     }
 
     fun deleteAllTodos() {
-        try {
-            
-        } catch (ex: Exception) {
+        try {} catch (ex: Exception) {
             println("Failed to delete all todos due to ${ex.message}")
         }
     }

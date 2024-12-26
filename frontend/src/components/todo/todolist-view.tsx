@@ -1,15 +1,15 @@
-import { TodoListItemType } from "./todolist-container";
+import { Todo } from "../../types/todo.type";
 import { TodoListItem } from "./todolist-item";
 
 export const TodoListView = ({
   todoList = [],
   handleRemoveTodoListItem = () => {},
 }: {
-  todoList: Array<TodoListItemType> ;
+  todoList: Todo[] | null | undefined;
   handleRemoveTodoListItem: (id: string) => void;
 }) => {
   const renderTodoListItems = () => {
-    return todoList.map((todo) => (
+    return todoList?.map((todo) => (
       <li
         key={todo.id}
         className="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-2 rounded space-y-2 sm:space-y-0"

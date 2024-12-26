@@ -22,11 +22,6 @@ class TodoListController(private val todoListService: TodoListService) {
         return todoListService.getAllTodos()
     }
 
-    @PostMapping("/{id}")
-    fun createTodo(@PathVariable("id") id: String = "", @RequestBody reqBody: TodoModel) {
-        todoListService.createTodo(id, reqBody)
-    }
-
     @PutMapping("/{id}")
     fun updateTodo(@PathVariable("id") id: String = "", @RequestBody reqBody: TodoModel) {
         todoListService.updateTodo(id, reqBody)

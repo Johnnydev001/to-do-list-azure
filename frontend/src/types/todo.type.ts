@@ -1,5 +1,8 @@
 export type Todo = {
   id: string;
   text: string;
-  date: Date;
+};
+
+export type RequestOptions = RequestInit & {
+  url: string;
 };

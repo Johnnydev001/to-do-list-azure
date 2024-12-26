@@ -2,20 +2,25 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
-import { useGetTodos } from "../../hooks/useGetTodos";
+import { useHandleTodos } from "../../hooks/useGetTodos";
+import { Todo } from "../../types/todo.type";
 
-export type TodoListItemType = {
-  text: string;
-  id: string;
+let requestOptions = {
+  url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 };
 
 export const TodoListContainer = () => {
   const [todoText, setTodoText] = useState<string>("");
-  const [todoList, setTodoList] = useState<Array<TodoListItemType>>([]);
+  const [todoList, setTodoList] = useState<Array<Todo>>([]);
 
-  const { isLoading, error, todos } = useGetTodos(
-    `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`
-  );
+  const { isLoading, error, todos } = useHandleTodos({
+    ...requestOptions,
+  });
 
   const handleTextChange = (event: any) => {
     const todoText = event?.target?.value ?? "";
@@ -23,13 +28,19 @@ export const TodoListContainer = () => {
     setTodoText(todoText);
   };
 
-  const handleAddClick = (event: any) => {
+  const handleAddClick = async (event: any) => {
     event?.preventDefault();
     if (todoText?.trim() != "") {
-      const newTodo: TodoListItemType = {
+      const newTodo: Todo = {
         text: todoText,
         id: generateRandomId(),
       };
+
+      useHandleTodos({
+        method: "post",
+        url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
+        body: JSON.stringify(newTodo),
+      });
 
       setTodoList((prevState) => [...prevState, newTodo]);
       setTodoText("");
@@ -46,10 +57,11 @@ export const TodoListContainer = () => {
     }
   };
 
-  const handleDeleteAll = () => {
-    if (todoList.length) {
-      setTodoList([]);
-    }
+  const handleDeleteAll = async () => {
+    useHandleTodos({
+      method: "delete",
+      url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
+    });
   };
 
   return (
@@ -78,6 +90,24 @@ export const TodoListContainer = () => {
           Add
         </button>
       </form>
+
+      {isLoading && (
+        <dialog
+          open={isLoading}
+          className="p-10 text-center text-md shadow-md rounded-md z-10"
+        >
+          Loading todos...
+        </dialog>
+      )}
+
+      {error && (
+        <section className="p-4 text-center text-md shadow-md rounded-md">
+          <h2 className="text-xl font-semibold text-center">
+            Failed to load todos
+          </h2>
+        </section>
+      )}
+
       {todos && todos.length > 0 && (
         <>
           <TodoListView
@@ -91,7 +121,7 @@ export const TodoListContainer = () => {
           >
             <Trash2 role="button" className="w-4 h-4 mr-2" />
             Delete all
-          </button> 
+          </button>
         </>
       )}
     </section>

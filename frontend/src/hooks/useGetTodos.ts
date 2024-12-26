@@ -1,26 +1,53 @@
 import { useCallback, useEffect, useState } from "react";
-import { Todo } from "../types/todo.type";
-import { getAllTodos } from "../services/todo.service";
+import { RequestOptions, Todo } from "../types/todo.type";
+import {
+  deleteAllTodos,
+  deleteTodoById,
+  getAllTodos,
+  createOrUpdateTodoById,
+} from "../services/todo.service";
 
-export const useGetTodos = (url: string) => {
+export const useHandleTodos = (reqOptions: RequestOptions) => {
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>();
+  const [error, setError] = useState<any>();
 
   const fetchData = useCallback(async () => {
     setError(null);
     setIsLoading(true);
 
     try {
-      const todos = await getAllTodos(url);
+      switch (reqOptions.method?.toLowerCase()) {
+        case "get":
+          const todos = await getAllTodos(reqOptions);
+          setTodos(todos);
+          break;
 
-      setTodos(todos);
+        case "post":
+        case "put":
+          await createOrUpdateTodoById(reqOptions);
+          break;
+
+        case "delete":
+          if (reqOptions.url.match("/^/api/items/d+$/")) {
+            await deleteTodoById(reqOptions);
+          } else {
+            await deleteAllTodos(reqOptions);
+          }
+
+          break;
+
+        default:
+          break;
+      }
     } catch (error) {
+      setIsLoading(false);
       setError(error);
     } finally {
       setIsLoading(false);
+      setError(null);
     }
-  }, [url]);
+  }, [reqOptions.url]);
 
   useEffect(() => {
     let isMounted = true;

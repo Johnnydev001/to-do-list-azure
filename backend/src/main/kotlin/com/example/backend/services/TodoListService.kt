@@ -1,6 +1,7 @@
 package com.example.backend.services
 
 import com.example.backend.models.TodoModel
+import java.time.LocalDate
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,14 +14,31 @@ class TodoListService() {
         var todoList: MutableList<TodoModel> = mutableListOf<TodoModel>()
 
         for (i in 1..20) {
-            val todo = TodoModel(id = i.toString(), "test for ${i.toString()}")
+            val todo =
+                    TodoModel(
+                            id = i.toString(),
+                            "test for ${i.toString()}",
+                            date = LocalDate.parse("2024-10-10")
+                    )
 
             todoList.add(todo)
         }
         return todoList
     }
 
-    fun createOrUpdateTodo(id: String, reqBody: TodoModel) {
+    fun createTodo(id: String, reqBody: TodoModel) {
+        try {
+            // Find todo by id
+            // If exists, update/replace
+            // If not, add
+            // Use reqBody info
+            todosList.add(reqBody)
+        } catch (ex: Exception) {
+            println("Failed to create or update new todo due to ${ex.message}")
+        }
+    }
+
+    fun updateTodo(id: String, reqBody: TodoModel) {
         try {
             // Find todo by id
             // If exists, update/replace

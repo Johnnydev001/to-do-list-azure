@@ -1,11 +1,10 @@
-import env from "react-dotenv";
 import { Todo } from "../types/todo.type";
 
-const getAllTodos = async (): Promise<Todo[] | null | undefined> => {
+export const getAllTodos = async (url: string): Promise<Todo[] | null | undefined> => {
   try {
     const requestInfo = {
       method: "GET",
-      url: `${env.BACKEND_ENDOINT}/api`,
+      url,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -19,20 +18,18 @@ const getAllTodos = async (): Promise<Todo[] | null | undefined> => {
       method: requestInfo.method,
     });
 
-    if (response.ok) {
-      todos = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to get all todos");
     }
+    todos = await response.json();
 
     return todos;
   } catch (error) {
-    console.error(
-      "Failed to remove todo by id due to: ",
-      JSON.stringify(error)
-    );
+    console.error("Failed to get all todos due to: ", JSON.stringify(error));
   }
 };
 
-const updateTodoById = async (id: string) => {
+export const updateTodoById = async (id: string) => {
   try {
     const requestInfo = {
       method: "PUT",
@@ -53,7 +50,7 @@ const updateTodoById = async (id: string) => {
   }
 };
 
-const deleteTodoById = async (id: string) => {
+export const deleteTodoById = async (id: string) => {
   try {
     const requestInfo = {
       method: "DELETE",
@@ -75,7 +72,7 @@ const deleteTodoById = async (id: string) => {
   }
 };
 
-const deleteAllTodos = async () => {
+export const deleteAllTodos = async () => {
   try {
     const requestInfo = {
       method: "DELETE",

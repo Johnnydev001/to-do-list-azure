@@ -1,5 +1,5 @@
 package com.example.backend.models
 
-import java.sql.Date
+import java.time.LocalDate
 
-data class TodoModel(val id: String? = "", val text: String = "", val date: Date) {}
+data class TodoModel(val id: String? = "", val text: String = "", val date: LocalDate) {}

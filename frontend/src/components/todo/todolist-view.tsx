@@ -5,7 +5,7 @@ export const TodoListView = ({
   todoList = [],
   handleRemoveTodoListItem = () => {},
 }: {
-  todoList: Array<TodoListItemType>;
+  todoList: Array<TodoListItemType> ;
   handleRemoveTodoListItem: (id: string) => void;
 }) => {
   const renderTodoListItems = () => {

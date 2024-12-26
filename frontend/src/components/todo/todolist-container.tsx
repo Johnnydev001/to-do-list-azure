@@ -2,6 +2,7 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
+import { useGetTodos } from "../../hooks/useGetTodos";
 
 export type TodoListItemType = {
   text: string;
@@ -11,6 +12,10 @@ export type TodoListItemType = {
 export const TodoListContainer = () => {
   const [todoText, setTodoText] = useState<string>("");
   const [todoList, setTodoList] = useState<Array<TodoListItemType>>([]);
+
+  const { isLoading, error, todos } = useGetTodos(
+    `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`
+  );
 
   const handleTextChange = (event: any) => {
     const todoText = event?.target?.value ?? "";
@@ -73,20 +78,21 @@ export const TodoListContainer = () => {
           Add
         </button>
       </form>
+      {todos && todos.length > 0 && (
+        <>
+          <TodoListView
+            todoList={todos}
+            handleRemoveTodoListItem={handleRemoveTodoListItem}
+          />
 
-      <TodoListView
-        todoList={todoList}
-        handleRemoveTodoListItem={handleRemoveTodoListItem}
-      />
-
-      {todoList.length > 0 && (
-        <button
-          onClick={handleDeleteAll}
-          className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
-        >
-          <Trash2 role="button" className="w-4 h-4 mr-2" />
-          Delete all
-        </button>
+          <button
+            onClick={handleDeleteAll}
+            className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
+          >
+            <Trash2 role="button" className="w-4 h-4 mr-2" />
+            Delete all
+          </button> 
+        </>
       )}
     </section>
   );

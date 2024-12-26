@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { RequestOptions, Todo } from "../types/todo.type";
 import { getAllTodos } from "../services/todo.service";
 
-export const useHandleTodos = (reqOptions: RequestOptions) => {
-  const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
+export const useHandleTodos = (
+  setTodos: (todos: Array<Todo> | undefined | null) => void,
+  reqOptions: RequestOptions
+) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>();
 
@@ -40,6 +42,5 @@ export const useHandleTodos = (reqOptions: RequestOptions) => {
   return {
     isLoading,
     error,
-    todos,
   };
 };

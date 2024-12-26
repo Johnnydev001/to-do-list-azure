@@ -20,9 +20,9 @@ let requestOptions = {
 
 export const TodoListContainer = () => {
   const [todoText, setTodoText] = useState<string>("");
-  const [todoList, setTodoList] = useState<Array<Todo>>([]);
+  const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
 
-  const { isLoading, error, todos } = useHandleTodos({
+  const { isLoading, error } = useHandleTodos(setTodos, {
     ...requestOptions,
   });
 
@@ -40,31 +40,32 @@ export const TodoListContainer = () => {
         id: generateRandomId(),
       };
       await createOrUpdateTodoById({
-        method: "post",
-        url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
+        ...requestOptions,
         body: JSON.stringify(newTodo),
+        method: "post",
       });
 
-      setTodoList((prevState) => [...prevState, newTodo]);
+      //setTodos((prevState) => [...prevState, newTodo]);
       setTodoText("");
     }
   };
 
   const handleRemoveTodoListItem = (todoItemId: string) => {
     if (todoItemId) {
-      const todoListWithoutItem = todoList.filter(
+      const todoListWithoutItem = todos?.filter(
         (elem) => elem.id !== todoItemId
       );
 
-      setTodoList(todoListWithoutItem);
+      setTodos(todoListWithoutItem);
     }
   };
 
   const handleDeleteAll = async () => {
     deleteAllTodos({
+      ...requestOptions,
       method: "delete",
-      url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
     });
+    setTodos([]);
   };
 
   return (

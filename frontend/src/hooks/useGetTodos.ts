@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { RequestOptions, Todo } from "../types/todo.type";
-import {
-  deleteAllTodos,
-  deleteTodoById,
-  getAllTodos,
-  createOrUpdateTodoById,
-} from "../services/todo.service";
+import { getAllTodos } from "../services/todo.service";
 
 export const useHandleTodos = (reqOptions: RequestOptions) => {
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
@@ -17,29 +12,8 @@ export const useHandleTodos = (reqOptions: RequestOptions) => {
     setIsLoading(true);
 
     try {
-      switch (reqOptions.method?.toLowerCase()) {
-        case "get":
-          const todos = await getAllTodos(reqOptions);
-          setTodos(todos);
-          break;
-
-        case "post":
-        case "put":
-          await createOrUpdateTodoById(reqOptions);
-          break;
-
-        case "delete":
-          if (reqOptions.url.match("/^/api/items/d+$/")) {
-            await deleteTodoById(reqOptions);
-          } else {
-            await deleteAllTodos(reqOptions);
-          }
-
-          break;
-
-        default:
-          break;
-      }
+      const todos = await getAllTodos(reqOptions);
+      setTodos(todos);
     } catch (error) {
       setIsLoading(false);
       setError(error);

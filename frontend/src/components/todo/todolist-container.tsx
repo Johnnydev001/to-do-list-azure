@@ -4,6 +4,10 @@ import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
 import { useHandleTodos } from "../../hooks/useGetTodos";
 import { Todo } from "../../types/todo.type";
+import {
+  createOrUpdateTodoById,
+  deleteAllTodos,
+} from "../../services/todo.service";
 
 let requestOptions = {
   url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
@@ -35,8 +39,7 @@ export const TodoListContainer = () => {
         text: todoText,
         id: generateRandomId(),
       };
-
-      useHandleTodos({
+      await createOrUpdateTodoById({
         method: "post",
         url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
         body: JSON.stringify(newTodo),
@@ -58,7 +61,7 @@ export const TodoListContainer = () => {
   };
 
   const handleDeleteAll = async () => {
-    useHandleTodos({
+    deleteAllTodos({
       method: "delete",
       url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
     });

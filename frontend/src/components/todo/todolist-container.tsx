@@ -8,10 +8,10 @@ import {
   createOrUpdateTodoById,
   deleteAllTodos,
 } from "../../services/todo.service";
-import { THEME_MODE, ThemeContext } from "../contexts";
+import { THEME_MODE, ThemeContext } from "../../contexts";
 
 let requestOptions = {
-  url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
+  url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export const TodoListContainer = ({
       await createOrUpdateTodoById({
         ...requestOptions,
         body: JSON.stringify(newTodo),
-        method: "post",
+        method: "POST",
       });
 
       //setTodos((prevState) => [...prevState, newTodo]);
@@ -76,18 +76,18 @@ export const TodoListContainer = ({
 
   const renderThemeIconBasedOnTheme = () => {
     return currentTheme.valueOf() === THEME_MODE.light ? (
-      <Moon role="button" className="w-4 h-4" />
-    ) : (
       <Sun role="button" className="w-4 h-4 " />
+    ) : (
+      <Moon role="button" className="w-4 h-4" />
     );
   };
 
   return (
     <section
       className={`min-h-screen ${
-        currentTheme === THEME_MODE.light
+        currentTheme === THEME_MODE.dark
           ? "bg-gray-600 text-white"
-          : "bg-gray-100 text-black"
+          : "bg-gray-200 text-black"
       } flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8`}
     >
       <article
@@ -115,8 +115,8 @@ export const TodoListContainer = ({
           placeholder="Add a new todo"
           className={`flex-grow border-[1px]  ${
             currentTheme === THEME_MODE.light
-              ? "bg-gray-700 text-white"
-              : "bg-gray-200 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
+              ? "bg-gray-400 text-white"
+              : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
           }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
           onChange={handleTextChange}
           value={todoText}

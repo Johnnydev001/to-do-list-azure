@@ -14,7 +14,7 @@ export const TodoListItem = ({
       <span className="text-sm">{text}</span>
 
       <button
-        className="self-end sm:self-auto hover:bg-gray-100 p-2"
+        className="self-end sm:self-auto hover:bg-gray-100 p-2 rounded-full"
         onClick={() => handleRemoveTodoListItem(id)}
       >
         <Trash color="red" className={"w-4 h-4"} />

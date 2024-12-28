@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { Todo } from "../../types/todo.type";
 import { TodoListItem } from "./todolist-item";
+import { THEME_MODE, ThemeContext } from "../contexts";
 
 export const TodoListView = ({
   todoList = [],
@@ -8,11 +10,16 @@ export const TodoListView = ({
   todoList: Todo[] | null | undefined;
   handleRemoveTodoListItem: (id: string) => void;
 }) => {
+  const currentTheme = useContext(ThemeContext);
   const renderTodoListItems = () => {
     return todoList?.map((todo) => (
       <li
         key={todo.id}
-        className="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-2 rounded space-y-2 sm:space-y-0"
+        className={`flex flex-col sm:flex-row sm:items-center justify-between  ${
+          currentTheme === THEME_MODE.light
+            ? "bg-gray-700 text-white"
+            : "bg-gray-200 text-gray-600"
+        } p-2 rounded space-y-2 sm:space-y-0`}
       >
         <TodoListItem
           id={todo.id}

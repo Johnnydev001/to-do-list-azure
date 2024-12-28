@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/todos")
-@CrossOrigin(origins = ["http://localhost:5174"])
+@CrossOrigin(origins = ["http://localhost:5173"])
 class TodoListController(private val todoListService: TodoListService) {
 
     @GetMapping

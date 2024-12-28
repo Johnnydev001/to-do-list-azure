@@ -1,5 +1,5 @@
-import { PlusCircle, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Moon, PlusCircle, Sun, Trash2 } from "lucide-react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
 import { useHandleTodos } from "../../hooks/useGetTodos";
@@ -8,6 +8,7 @@ import {
   createOrUpdateTodoById,
   deleteAllTodos,
 } from "../../services/todo.service";
+import { THEME_MODE, ThemeContext } from "../contexts";
 
 let requestOptions = {
   url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/todos`,
@@ -18,7 +19,12 @@ let requestOptions = {
   },
 };
 
-export const TodoListContainer = () => {
+export const TodoListContainer = ({
+  setThemeMode = () => {},
+}: {
+  setThemeMode: any;
+}) => {
+  const currentTheme = useContext(ThemeContext);
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
 
@@ -68,9 +74,35 @@ export const TodoListContainer = () => {
     setTodos([]);
   };
 
+  const renderThemeIconBasedOnTheme = () => {
+    return currentTheme.valueOf() === THEME_MODE.light ? (
+      <Moon role="button" className="w-4 h-4" />
+    ) : (
+      <Sun role="button" className="w-4 h-4 " />
+    );
+  };
+
   return (
-    <section className="min-h-screen bg-gray-100 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold mb-4 text-center">TO DO LIST</h1>
+    <section
+      className={`min-h-screen ${
+        currentTheme === THEME_MODE.light
+          ? "bg-gray-600 text-white"
+          : "bg-gray-100 text-black"
+      } flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8`}
+    >
+      <article
+        className="flex items-center space-x-4 mb-4 "
+        onClick={() =>
+          setThemeMode(
+            currentTheme === THEME_MODE.light
+              ? THEME_MODE.dark
+              : THEME_MODE.light
+          )
+        }
+      >
+        <h1 className="text-2xl font-bold  text-center">TO DO LIST</h1>
+        {renderThemeIconBasedOnTheme()}
+      </article>
 
       <form
         className="max-w-sm w-full flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2"
@@ -81,7 +113,11 @@ export const TodoListContainer = () => {
           name="todo-list-text-input"
           id="todo-list-text-input"
           placeholder="Add a new todo"
-          className="flex-grow border-[1px] text-gray-600 border-gray-400 focus:border-gray-600 hover:border-gray-600 cursor-pointer p-2 rounded-md placeholder:text-sm placeholder:text-gray-400"
+          className={`flex-grow border-[1px]  ${
+            currentTheme === THEME_MODE.light
+              ? "bg-gray-700 text-white"
+              : "bg-gray-200 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
+          }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
           onChange={handleTextChange}
           value={todoText}
         />

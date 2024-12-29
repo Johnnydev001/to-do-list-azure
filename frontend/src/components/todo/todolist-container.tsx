@@ -115,7 +115,7 @@ export const TodoListContainer = ({
           placeholder="Add a new todo"
           className={`flex-grow border-[1px]  ${
             currentTheme === THEME_MODE.light
-              ? "bg-gray-400 text-white"
+              ? "bg-gray-300 text-white"
               : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
           }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
           onChange={handleTextChange}

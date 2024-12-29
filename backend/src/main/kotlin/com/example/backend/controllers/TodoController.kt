@@ -1,4 +1,4 @@
-package com.example.backend
+package com.example.backend.controllers
 
 import com.example.backend.models.TodoModel
 import com.example.backend.services.TodoService
@@ -6,20 +6,21 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.http.ResponseEntity
+
 
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = ["http://localhost:5173"])
-class TodoController @Autowired constructor(private val todoListService: TodoService) {
+class TodoController @Autowired constructor(private val todoService: TodoService) {
 
         @Operation(description = "Get all the todos from the database")
         @ApiResponses(
@@ -32,13 +33,7 @@ class TodoController @Autowired constructor(private val todoListService: TodoSer
         fun getAllTodos(): ResponseEntity<List<TodoModel>> {
 
                 return try {
-                        val todos: List<TodoModel> = todoListService.getAllTodos()
-
-                        if (todos.size > 0) {
-                                ResponseEntity.ok(todos)
-                        } else {
-                                ResponseEntity.notFound().build()
-                        }
+                        ResponseEntity.ok(todoService.getAllTodos())
                 } catch (ex: Exception) {
                         println("Error getting all todos due to ${ex.message}")
 
@@ -55,7 +50,7 @@ class TodoController @Autowired constructor(private val todoListService: TodoSer
         )
         @PutMapping("/todos/{id}", consumes = ["application/json"])
         fun updateTodo(@PathVariable("id") id: String = "", @RequestBody reqBody: TodoModel) {
-                todoListService.updateTodo(id, reqBody)
+                todoService.updateTodo(id, reqBody)
         }
 
         @Operation(description = "Delete existing todo")
@@ -66,8 +61,8 @@ class TodoController @Autowired constructor(private val todoListService: TodoSer
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @DeleteMapping("/todos/{id}", consumes = ["application/json"])
-        fun deleteTodoById(@PathVariable("id") id: String = ""): String {
-                return todoListService.deleteTodoById(id)
+        fun deleteTodoById(@PathVariable("id") id: String = "") {
+                return todoService.deleteTodoById(id)
         }
 
         @Operation(description = "Delete all todos from the database")
@@ -79,6 +74,6 @@ class TodoController @Autowired constructor(private val todoListService: TodoSer
         )
         @DeleteMapping("/todos")
         fun deleteAllTodos() {
-                return todoListService.deleteAllTodos()
+                return todoService.deleteAllTodos()
         }
 }

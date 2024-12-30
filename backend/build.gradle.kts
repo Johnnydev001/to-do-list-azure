@@ -28,6 +28,10 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("com.azure.spring:spring-cloud-azure-starter-keyvault-secrets:4.7.0")
+	implementation("com.azure.spring:spring-cloud-azure-starter")
+	implementation("com.azure:azure-security-keyvault-secrets:4.9.1")
+	implementation("com.azure:azure-identity:1.9.0")
 
 }
 

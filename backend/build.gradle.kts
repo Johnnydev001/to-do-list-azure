@@ -32,6 +32,8 @@ dependencies {
 	implementation("com.azure.spring:spring-cloud-azure-starter")
 	implementation("com.azure:azure-security-keyvault-secrets:4.9.1")
 	implementation("com.azure:azure-identity:1.9.0")
+	implementation("me.paulschwarz:spring-dotenv:4.0.0")
+
 
 }
 

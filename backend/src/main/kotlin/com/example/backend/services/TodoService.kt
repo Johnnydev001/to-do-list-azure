@@ -2,11 +2,10 @@ package com.example.backend.services
 
 import com.example.backend.models.TodoModel
 import com.example.backend.repositories.TodoRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class TodoService(@Autowired val todoRepository: TodoRepository) {
+class TodoService(val todoRepository: TodoRepository) {
 
     fun updateTodo(id: String, reqBody: TodoModel) {
         try {

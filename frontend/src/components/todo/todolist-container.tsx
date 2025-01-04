@@ -1,14 +1,16 @@
 import { Moon, PlusCircle, Sun, Trash2 } from "lucide-react";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
-import { useHandleTodos } from "../../hooks/useGetTodos";
+
 import { Todo } from "../../types/todo.type";
 import {
   createOrUpdateTodoById,
   deleteAllTodos,
+  deleteTodoById,
 } from "../../services/todo.service";
 import { THEME_MODE, ThemeContext } from "../../contexts";
+import { useHandleGetTodos } from "../../hooks/useGetTodos";
 
 let requestOptions = {
   url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
@@ -16,7 +18,9 @@ let requestOptions = {
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
+    "Access-Control-Request-Method": "GET",
   },
+  origin: window.location.origin,
 };
 
 export const TodoListContainer = ({
@@ -28,7 +32,7 @@ export const TodoListContainer = ({
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
 
-  const { isLoading, error } = useHandleTodos(setTodos, {
+  const { isLoading, error } = useHandleGetTodos(setTodos, {
     ...requestOptions,
   });
 
@@ -56,13 +60,15 @@ export const TodoListContainer = ({
     }
   };
 
-  const handleRemoveTodoListItem = (todoItemId: string) => {
+  const handleRemoveTodoListItem = async (todoItemId: string) => {
     if (todoItemId) {
-      const todoListWithoutItem = todos?.filter(
-        (elem) => elem.id !== todoItemId
+      await deleteTodoById(
+        {
+          ...requestOptions,
+          method: "DELETE",
+        },
+        todoItemId
       );
-
-      setTodos(todoListWithoutItem);
     }
   };
 
@@ -115,7 +121,7 @@ export const TodoListContainer = ({
           placeholder="Add a new todo"
           className={`flex-grow border-[1px]  ${
             currentTheme === THEME_MODE.light
-              ? "bg-gray-300 text-white"
+              ? "bg-gray-300 text-gray-700"
               : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
           }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
           onChange={handleTextChange}

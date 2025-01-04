@@ -40,9 +40,18 @@ export const createOrUpdateTodoById = async (reqOptions: RequestOptions) => {
   }
 };
 
-export const deleteTodoById = async (reqOptions: RequestOptions) => {
+export const deleteTodoById = async (
+  reqOptions: RequestOptions,
+  id: string
+) => {
   try {
-    const response = await fetch(reqOptions.url, {
+    if (!id) {
+      throw new Error("Failed to delete todo by id - no id was provided");
+    }
+
+    const requestUrlWithId = reqOptions.url + `/${id}`;
+
+    const response = await fetch(requestUrlWithId, {
       headers: reqOptions.headers,
       method: reqOptions.method,
     });

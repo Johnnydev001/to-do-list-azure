@@ -24,8 +24,17 @@ class TodoService(val todoRepository: TodoRepository) {
     }
 
     fun getAllTodos(): List<TodoModel> {
+        try {
+            // For testing purposes:
+            //val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}",
+            // text = "works ${it}") }
+            // todoRepository.saveAll(todosToInsert)
+            return todoRepository.findAll()
+        } catch (ex: Exception) {
+            println("Failed to get all todos due to todo due to ${ex.message}")
 
-        return todoRepository.findAll()
+            throw ex
+        }
     }
 
     fun deleteTodoById(id: String) {
@@ -52,4 +61,5 @@ class TodoService(val todoRepository: TodoRepository) {
             throw ex
         }
     }
+}
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = ["http://localhost:5173"])
 class TodoController @Autowired constructor(val todoService: TodoService) {
 
         @Operation(description = "Get all the todos from the database")
@@ -30,7 +32,7 @@ class TodoController @Autowired constructor(val todoService: TodoService) {
         fun getAllTodos(): ResponseEntity<List<TodoModel>> {
 
                 return try {
-                        ResponseEntity.ok(listOf(TodoModel(id = "1", text = "232")))
+                        ResponseEntity.ok(todoService.getAllTodos())
                 } catch (ex: Exception) {
                         println("Error getting all todos due to ${ex.message}")
 
@@ -57,7 +59,7 @@ class TodoController @Autowired constructor(val todoService: TodoService) {
                                 ApiResponse(description = "Success", responseCode = "200"),
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
-        @DeleteMapping("/todos/{id}", consumes = ["application/json"])
+        @DeleteMapping("/todos/{id}")
         fun deleteTodoById(@PathVariable("id") id: String = "") {
                 return todoService.deleteTodoById(id)
         }

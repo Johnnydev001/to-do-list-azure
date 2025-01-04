@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { RequestOptions, Todo } from "../types/todo.type";
 import { getAllTodos } from "../services/todo.service";
 
-export const useHandleTodos = (
+export const useHandleGetTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
   reqOptions: RequestOptions
 ) => {

@@ -17,7 +17,7 @@ export const TodoListView = ({
         key={todo.id}
         className={`flex flex-col sm:flex-row sm:items-center justify-between  ${
           currentTheme === THEME_MODE.light
-            ? "bg-gray-400 text-white"
+            ? "bg-gray-300 text-gray-700"
             : "bg-gray-100 text-gray-600"
         } p-2 rounded space-y-2 sm:space-y-0`}
       >

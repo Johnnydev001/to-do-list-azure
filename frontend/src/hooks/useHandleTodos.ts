@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { RequestOptions, Todo } from "../types/todo.type";
-import { getAllTodos } from "../services/todo.service";
+import { deleteTodoById, getAllTodos } from "../services/todo.service";
 
-export const useHandleGetTodos = (
+export const useHandleTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
   reqOptions: RequestOptions
 ) => {
@@ -12,6 +12,21 @@ export const useHandleGetTodos = (
   const fetchData = useCallback(async () => {
     setError(null);
     setIsLoading(true);
+
+    switch (reqOptions.method) {
+      case "DELETE":
+        await deleteTodoById(
+          {
+            ...reqOptions,
+            method: "DELETE",
+          },
+          reqOptions.body.id
+        );
+        break;
+
+      default:
+        break;
+    }
 
     try {
       const todos = await getAllTodos(reqOptions);
@@ -23,7 +38,7 @@ export const useHandleGetTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [reqOptions.url]);
+  }, [reqOptions.url, reqOptions.method]);
 
   useEffect(() => {
     let isMounted = true;

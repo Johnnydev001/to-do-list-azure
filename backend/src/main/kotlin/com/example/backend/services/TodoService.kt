@@ -26,8 +26,8 @@ class TodoService(val todoRepository: TodoRepository) {
     fun getAllTodos(): List<TodoModel> {
         try {
             // For testing purposes:
-            //val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}",
-            // text = "works ${it}") }
+            // val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}", text = "works ${it}")
+            // }
             // todoRepository.saveAll(todosToInsert)
             return todoRepository.findAll()
         } catch (ex: Exception) {
@@ -61,5 +61,4 @@ class TodoService(val todoRepository: TodoRepository) {
             throw ex
         }
     }
-}
 }

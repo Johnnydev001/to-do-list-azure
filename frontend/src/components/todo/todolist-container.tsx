@@ -7,21 +7,9 @@ import { Todo } from "../../types/todo.type";
 import {
   createOrUpdateTodoById,
   deleteAllTodos,
-  deleteTodoById,
 } from "../../services/todo.service";
 import { THEME_MODE, ThemeContext } from "../../contexts";
-import { useHandleGetTodos } from "../../hooks/useGetTodos";
-
-let requestOptions = {
-  url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    "Access-Control-Request-Method": "GET",
-  },
-  origin: window.location.origin,
-};
+import { useHandleTodos } from "../../hooks/useHandleTodos";
 
 export const TodoListContainer = ({
   setThemeMode = () => {},
@@ -31,9 +19,19 @@ export const TodoListContainer = ({
   const currentTheme = useContext(ThemeContext);
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
+  const [reqOptions, setReqOptions] = useState<({
+    url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Request-Method": "GET",
+    },
+    origin: window.location.origin,
+  });
 
-  const { isLoading, error } = useHandleGetTodos(setTodos, {
-    ...requestOptions,
+  const { isLoading, error } = useHandleTodos(setTodos, {
+    ...reqOptions,
   });
 
   const handleTextChange = (event: any) => {
@@ -50,7 +48,7 @@ export const TodoListContainer = ({
         id: generateRandomId(),
       };
       await createOrUpdateTodoById({
-        ...requestOptions,
+        ...reqOptions,
         body: JSON.stringify(newTodo),
         method: "POST",
       });
@@ -62,19 +60,19 @@ export const TodoListContainer = ({
 
   const handleRemoveTodoListItem = async (todoItemId: string) => {
     if (todoItemId) {
-      await deleteTodoById(
-        {
-          ...requestOptions,
-          method: "DELETE",
+      setReqOptions({
+        ...reqOptions,
+        method: "DELETE",
+        body: {
+          id: todoItemId,
         },
-        todoItemId
-      );
+      });
     }
   };
 
   const handleDeleteAll = async () => {
     deleteAllTodos({
-      ...requestOptions,
+      ...reqOptions,
       method: "delete",
     });
     setTodos([]);

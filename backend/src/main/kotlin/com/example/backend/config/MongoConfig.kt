@@ -1,16 +1,15 @@
 package com.example.backend.config
 
-import com.example.backend.services.KeyvaultService
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.beans.factory.annotation.Value
 
 @Configuration
-class MongoConfig(val keyvaultService: KeyvaultService) {
+class MongoConfig() {
 
     @Value("\${database.uri}") var mongoDbConnectionString: String = ""
 

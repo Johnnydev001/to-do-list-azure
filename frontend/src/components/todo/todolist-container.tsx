@@ -19,7 +19,7 @@ export const TodoListContainer = ({
   const currentTheme = useContext(ThemeContext);
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
-  const [reqOptions, setReqOptions] = useState<({
+  const [reqOptions, setReqOptions] = useState({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
     method: "GET",
     headers: {

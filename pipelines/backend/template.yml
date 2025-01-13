@@ -12,18 +12,13 @@ pool:
   name: "self-agent-pool"
 
 variables:
-  azureResourceManagerServiceConnection: "ARM service connection"
-  azureContainerRegistryServer: "todolistazureacr.azurecr.io"
+  #azureResourceManagerServiceConnection: "ARM service connection"
+  #azureContainerRegistryServer: "todolistazureacr.azurecr.io"
   dockerImageName: todolistbackend
-  azureContainerRegistryRepo: "$(azureContainerRegistryServer)/$(dockerImageName):$(Build.BuildId)"
+  #azureContainerRegistryRepo: "$(azureContainerRegistryServer)/$(dockerImageName):$(Build.BuildId)"
 
 stages:
   - stage: build
     displayName: Build application
     jobs:
       - template: build-job-template.yml
-
-  - stage: deploy
-    displayName: Deploy to Azure
-    jobs:
-      - template: deploy-job-template.yml

@@ -5,4 +5,5 @@ export type Todo = {
 
 export type RequestOptions = RequestInit & {
   url: string;
+  origin?: string;
 };

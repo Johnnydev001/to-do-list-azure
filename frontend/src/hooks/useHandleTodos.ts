@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { RequestOptions, Todo } from "../types/todo.type";
-import { deleteTodoById, getAllTodos } from "../services/todo.service";
+import {
+  createOrUpdateTodoById,
+  deleteAllTodos,
+  deleteTodoById,
+  getAllTodos,
+} from "../services/todo.service";
 
 export const useHandleTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
@@ -13,23 +18,37 @@ export const useHandleTodos = (
     setError(null);
     setIsLoading(true);
 
-    switch (reqOptions.method) {
-      case "DELETE":
-        await deleteTodoById(
-          {
-            ...reqOptions,
-            method: "DELETE",
-          },
-          reqOptions.body.id
-        );
-        break;
-
-      default:
-        break;
-    }
-
     try {
-      const todos = await getAllTodos(reqOptions);
+      switch (reqOptions?.method?.toLocaleLowerCase()) {
+        case "post":
+        case "put":
+          await createOrUpdateTodoById(reqOptions);
+          break;
+
+        case "delete":
+          const idFromPath = reqOptions?.body?.id || "";
+          if (idFromPath) {
+            await deleteTodoById({
+              ...reqOptions,
+              method: "DELETE",
+            });
+          } else {
+            await deleteAllTodos({
+              ...reqOptions,
+              method: "DELETE",
+            });
+          }
+
+          break;
+        default:
+          break;
+      }
+
+      const todos = await getAllTodos({
+        ...reqOptions,
+        method: "GET",
+      });
+
       setTodos(todos);
     } catch (error) {
       setIsLoading(false);
@@ -38,7 +57,7 @@ export const useHandleTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [reqOptions.url, reqOptions.method]);
+  }, [reqOptions.method]);
 
   useEffect(() => {
     let isMounted = true;

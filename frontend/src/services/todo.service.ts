@@ -40,23 +40,21 @@ export const createOrUpdateTodoById = async (reqOptions: RequestOptions) => {
   }
 };
 
-export const deleteTodoById = async (
-  reqOptions: RequestOptions,
-  id: string
-) => {
+export const deleteTodoById = async (reqOptions: RequestOptions) => {
   try {
+    const id = reqOptions?.body?.id || "";
     if (!id) {
       throw new Error("Failed to delete todo by id - no id was provided");
-    }
+    } else {
+      const requestUrlWithId = reqOptions.url + `/${id}`;
 
-    const requestUrlWithId = reqOptions.url + `/${id}`;
-
-    const response = await fetch(requestUrlWithId, {
-      headers: reqOptions.headers,
-      method: reqOptions.method,
-    });
-    if (!response.ok) {
-      throw new Error("Failed to delete todo by id");
+      const response = await fetch(requestUrlWithId, {
+        headers: reqOptions.headers,
+        method: reqOptions.method,
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete todo by id");
+      }
     }
   } catch (error) {
     console.error(

@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
 
-import { Todo } from "../../types/todo.type";
+import { RequestOptions, Todo } from "../../types/todo.type";
 import {
   createOrUpdateTodoById,
   deleteAllTodos,
@@ -19,7 +19,7 @@ export const TodoListContainer = ({
   const currentTheme = useContext(ThemeContext);
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
-  const [reqOptions, setReqOptions] = useState({
+  const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
     method: "GET",
     headers: {
@@ -47,10 +47,10 @@ export const TodoListContainer = ({
         text: todoText,
         id: generateRandomId(),
       };
-      await createOrUpdateTodoById({
+      setReqOptions({
         ...reqOptions,
         body: JSON.stringify(newTodo),
-        method: "POST",
+        method: "PUT",
       });
 
       //setTodos((prevState) => [...prevState, newTodo]);
@@ -58,8 +58,8 @@ export const TodoListContainer = ({
     }
   };
 
-  const handleRemoveTodoListItem = async (todoItemId: string) => {
-    if (todoItemId) {
+  const handleRemoveTodoListItem = (todoItemId: string) => {
+    if (todoItemId !== "") {
       setReqOptions({
         ...reqOptions,
         method: "DELETE",
@@ -70,12 +70,11 @@ export const TodoListContainer = ({
     }
   };
 
-  const handleDeleteAll = async () => {
-    deleteAllTodos({
+  const handleDeleteAll = () => {
+    setReqOptions({
       ...reqOptions,
-      method: "delete",
+      method: "DELETE",
     });
-    setTodos([]);
   };
 
   const renderThemeIconBasedOnTheme = () => {

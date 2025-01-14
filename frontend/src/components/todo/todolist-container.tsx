@@ -3,11 +3,8 @@ import { useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
 
-import { RequestOptions, Todo } from "../../types/todo.type";
-import {
-  createOrUpdateTodoById,
-  deleteAllTodos,
-} from "../../services/todo.service";
+import { Todo } from "../../types/todo.type";
+
 import { THEME_MODE, ThemeContext } from "../../contexts";
 import { useHandleTodos } from "../../hooks/useHandleTodos";
 
@@ -25,7 +22,6 @@ export const TodoListContainer = ({
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      "Access-Control-Request-Method": "GET",
     },
     origin: window.location.origin,
   });

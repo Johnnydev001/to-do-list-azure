@@ -35,7 +35,7 @@ export const useHandleTodos = (
           } else {
             await deleteAllTodos({
               ...reqOptions,
-              method: "DELETE",
+              method: "delete",
             });
           }
 
@@ -57,7 +57,7 @@ export const useHandleTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [reqOptions.method]);
+  }, [reqOptions.url, reqOptions.body, reqOptions.method]);
 
   useEffect(() => {
     let isMounted = true;

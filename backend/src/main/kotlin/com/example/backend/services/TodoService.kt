@@ -7,14 +7,16 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(val todoRepository: TodoRepository) {
 
-    fun updateTodo(id: String, reqBody: TodoModel) {
+    fun createOrUpdateTodoById(reqBody: TodoModel) {
         try {
-
+            val id = reqBody.id
             val existingTodo = todoRepository.findById(id).orElse(null)
             if (existingTodo !== null) {
 
                 val updatedTodo = existingTodo.copy(id = reqBody.id, text = reqBody.text)
                 todoRepository.save(updatedTodo)
+            } else {
+                todoRepository.save(reqBody)
             }
         } catch (ex: Exception) {
             println("Failed to create or update new todo due to ${ex.message}")

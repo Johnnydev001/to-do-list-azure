@@ -5,21 +5,32 @@ import com.example.backend.services.TodoService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = ["http://localhost:5173"])
-class TodoController @Autowired constructor(val todoService: TodoService) {
+@CrossOrigin(
+        origins = ["http://localhost:5173"],
+        allowedHeaders = ["Content-Type", "Accept"],
+        methods =
+                [
+                        RequestMethod.OPTIONS,
+                        RequestMethod.GET,
+                        RequestMethod.PUT,
+                        RequestMethod.POST,
+                        RequestMethod.DELETE]
+)
+class TodoController(val todoService: TodoService) {
 
         @Operation(description = "Get all the todos from the database")
         @ApiResponses(
@@ -47,9 +58,10 @@ class TodoController @Autowired constructor(val todoService: TodoService) {
                                 ApiResponse(description = "Success", responseCode = "200"),
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
-        @PutMapping("/todos/{id}", consumes = ["application/json"])
-        fun updateTodo(@PathVariable("id") id: String = "", @RequestBody reqBody: TodoModel) {
-                todoService.updateTodo(id, reqBody)
+        @PostMapping("/todos", consumes = ["application/json"])
+        @PutMapping("/todos", consumes = ["application/json"])
+        fun createOrUpdateTodoById(@RequestBody reqBody: TodoModel) {
+                todoService.createOrUpdateTodoById(reqBody)
         }
 
         @Operation(description = "Delete existing todo")

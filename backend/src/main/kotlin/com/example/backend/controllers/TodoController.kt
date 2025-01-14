@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestParam
 
 @RestController
 @RequestMapping("/api/v1")
@@ -40,10 +41,10 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos")
-        fun getAllTodos(): ResponseEntity<List<TodoModel>> {
+        fun getAllTodos(@RequestParam sortOrder: String): ResponseEntity<List<TodoModel>> {
 
                 return try {
-                        ResponseEntity.ok(todoService.getAllTodos())
+                        ResponseEntity.ok(todoService.getAllTodos(sortOrder))
                 } catch (ex: Exception) {
                         println("Error getting all todos due to ${ex.message}")
 

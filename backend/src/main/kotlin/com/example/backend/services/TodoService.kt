@@ -25,13 +25,18 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun getAllTodos(): List<TodoModel> {
+    fun getAllTodos(sortOrder: String = "asc"): List<TodoModel> {
         try {
             // For testing purposes:
             // val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}", text = "works ${it}")
             // }
             // todoRepository.saveAll(todosToInsert)
-            return todoRepository.findAll()
+            when (sortOrder) {
+                "asc" -> return todoRepository.findAllByOrderByIdAsc()
+                else -> {
+                    return todoRepository.findAllByOrderByIdDesc()
+                }
+            }
         } catch (ex: Exception) {
             println("Failed to get all todos due to todo due to ${ex.message}")
 

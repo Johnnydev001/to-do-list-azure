@@ -1,4 +1,12 @@
-import { Moon, PlusCircle, Sun, Trash2 } from "lucide-react";
+import {
+  ArrowDownUp,
+  ArrowUpAz,
+  ArrowUpDown,
+  Moon,
+  PlusCircle,
+  Sun,
+  Trash2,
+} from "lucide-react";
 import { useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
 import { generateRandomId } from "../../utils/utils";
@@ -14,6 +22,7 @@ export const TodoListContainer = ({
   setThemeMode: any;
 }) => {
   const currentTheme = useContext(ThemeContext);
+
   const [todoText, setTodoText] = useState<string>("");
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
   const [reqOptions, setReqOptions] = useState<any>({
@@ -23,6 +32,7 @@ export const TodoListContainer = ({
       "Content-Type": "application/json",
       Accept: "application/json",
     },
+    sortOrder: "asc",
     origin: window.location.origin,
   });
 
@@ -81,6 +91,14 @@ export const TodoListContainer = ({
     );
   };
 
+  const handleSortTodos = (sortOrder = "asc") => {
+    setReqOptions({
+      ...reqOptions,
+      method: "GET",
+      sortOrder,
+    });
+  };
+
   return (
     <section
       className={`min-h-screen ${
@@ -101,6 +119,11 @@ export const TodoListContainer = ({
       >
         <h1 className="text-2xl font-bold  text-center">TO DO LIST</h1>
         {renderThemeIconBasedOnTheme()}
+      </article>
+
+      <article className="flex space-x-4 ">
+        <ArrowUpDown onClick={() => handleSortTodos("asc")} />
+        <ArrowDownUp onClick={() => handleSortTodos("desc")} />
       </article>
 
       <form

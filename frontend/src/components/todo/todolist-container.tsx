@@ -76,12 +76,17 @@ export const TodoListContainer = ({
     if (searchedId) {
       setReqOptions({
         ...reqOptions,
-        body: JSON.stringify({
+        body: {
           id: searchedId,
-        }),
+        },
         method: "GET",
       });
       setSearchedId("");
+    } else {
+      setReqOptions({
+        ...reqOptions,
+        method: "GET",
+      });
     }
   };
 

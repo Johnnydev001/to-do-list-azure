@@ -5,7 +5,9 @@ import {
   deleteAllTodos,
   deleteTodoById,
   getAllTodos,
+  getTodoById,
 } from "../services/todo.service";
+import { json } from "stream/consumers";
 
 export const useHandleTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
@@ -35,7 +37,7 @@ export const useHandleTodos = (
           } else {
             await deleteAllTodos({
               ...reqOptions,
-              method: "delete",
+              method: "DELETE",
             });
           }
 
@@ -43,11 +45,20 @@ export const useHandleTodos = (
         default:
           break;
       }
+      let todos: Todo[] | null | undefined = [];
 
-      const todos = await getAllTodos({
-        ...reqOptions,
-        method: "GET",
-      });
+      if (reqOptions?.body?.id) {
+        const todoById = await getTodoById({
+          ...reqOptions,
+        });
+
+        console.log(todoById);
+      } else {
+        todos = await getAllTodos({
+          ...reqOptions,
+          method: "GET",
+        });
+      }
 
       setTodos(todos);
     } catch (error) {

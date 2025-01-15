@@ -1,5 +1,24 @@
 import { RequestOptions, Todo } from "../types/todo.type";
 
+export const getTodoById = async (reqOptions: RequestOptions) => {
+  try {
+    let requestUrl = reqOptions?.url + "/" + reqOptions?.body?.id;
+
+    const response = await fetch(requestUrl, {
+      headers: reqOptions.headers,
+      method: reqOptions.method,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to get todo by id");
+    }
+  } catch (error) {
+    throw new Error(
+      `Failed to get todo by id due to: ${JSON.stringify(error)}`
+    );
+  }
+};
+
 export const getAllTodos = async (
   reqOptions: RequestOptions
 ): Promise<Todo[] | null | undefined> => {

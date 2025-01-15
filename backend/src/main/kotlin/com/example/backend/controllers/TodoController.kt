@@ -41,7 +41,7 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos/{id}")
-        fun getAllTodos(@RequestParam id: String): ResponseEntity<TodoModel> {
+        fun getTodoById(@PathVariable id: String): ResponseEntity<TodoModel> {
 
                 return try {
                         ResponseEntity.ok(todoService.getTodoById(id))

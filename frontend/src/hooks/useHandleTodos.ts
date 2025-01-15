@@ -19,7 +19,7 @@ export const useHandleTodos = (
     setIsLoading(true);
 
     try {
-      switch (reqOptions?.method?.toLocaleLowerCase()) {
+      switch (reqOptions?.method?.toLowerCase()) {
         case "post":
         case "put":
           await createOrUpdateTodoById(reqOptions);

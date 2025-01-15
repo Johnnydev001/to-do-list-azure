@@ -81,6 +81,7 @@ export const TodoListContainer = ({
         }),
         method: "GET",
       });
+      setSearchedId("");
     }
   };
 
@@ -122,24 +123,23 @@ export const TodoListContainer = ({
   const renderFilterSortingSection = () => {
     return (
       <article className="flex justify-between items-center space-x-4">
-        <form action="handleSearchById">
+        <form onSubmit={handleSearchById}>
           <CustomSearchInput
             type="text"
-            name="todo-list-text-input"
-            id="todo-list-text-input"
-            placeholder="Search..."
+            name="todo-list-search-text-input"
+            id="todo-list-search-text-input"
+            placeholder="Search todo..."
             className={`flex-grow border-[1px]  ${
               currentTheme === THEME_MODE.light
-                ? "bg-gray-300 text-gray-700"
-                : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
+                ? "bg-white text-gray-700 border-gray-400 border-[1px]"
+                : "bg-white text-gray-700 border-gray-400 border-[1px]  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
             }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
             onChange={handleSearchIdChange}
-            onKeyDown={handleSearchById}
             value={searchedId}
           />
         </form>
 
-        <article className="grid justify-start items-start">
+        <article className="grid justify-start items-start cursor-pointer">
           {reqOptions?.sortOrder === "asc" ? (
             <ArrowDownUp
               className="w-4 h-4"
@@ -191,8 +191,8 @@ export const TodoListContainer = ({
           placeholder="Add a new todo"
           className={`flex-grow border-[1px]  ${
             currentTheme === THEME_MODE.light
-              ? "bg-gray-300 text-gray-700"
-              : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
+              ? "bg-white text-gray-700 border-gray-400 border-[1px]"
+              : "bg-white text-gray-700 border-gray-400 border-[1px]  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
           }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
           onChange={handleTextChange}
           value={todoText}

@@ -10,7 +10,6 @@ export const CustomSearchInput = (inputProps: SearchInputType) => {
       className={inputProps.className}
       onChange={inputProps.onChange}
       value={inputProps.value}
-      onKeyDown={inputProps.onKeyDown}
     />
   );
 };

@@ -6,7 +6,11 @@ export const getAllTodos = async (
   try {
     let todos: Array<Todo> = [];
 
-    const response = await fetch(reqOptions.url, {
+    let requestUrl = reqOptions?.url;
+
+    requestUrl += "?sortOrder=" + reqOptions?.sortOrder;
+
+    const response = await fetch(requestUrl, {
       headers: reqOptions.headers,
       method: reqOptions.method,
     });

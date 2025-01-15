@@ -11,6 +11,7 @@ export const TodoListItem = ({
 }) => {
   return (
     <article className="items-center flex justify-between w-full">
+      <span className="p-2 bg-white text-black rounded-full text-xs">{id}</span>
       <span className="text-sm">{text}</span>
 
       <button

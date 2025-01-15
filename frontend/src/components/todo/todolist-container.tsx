@@ -15,6 +15,7 @@ import { Todo } from "../../types/todo.type";
 
 import { THEME_MODE, ThemeContext } from "../../contexts";
 import { useHandleTodos } from "../../hooks/useHandleTodos";
+import { CustomSearchInput } from "../ui/searchInput";
 
 export const TodoListContainer = ({
   setThemeMode = () => {},
@@ -24,6 +25,8 @@ export const TodoListContainer = ({
   const currentTheme = useContext(ThemeContext);
 
   const [todoText, setTodoText] = useState<string>("");
+  const [searchedId, setSearchedId] = useState<string>("");
+
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
   const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
@@ -46,6 +49,12 @@ export const TodoListContainer = ({
     setTodoText(todoText);
   };
 
+  const handleSearchIdChange = (event: any) => {
+    const id = event?.target?.value ?? "";
+
+    setSearchedId(id);
+  };
+
   const handleAddClick = async (event: any) => {
     event?.preventDefault();
     if (todoText?.trim() != "") {
@@ -58,9 +67,20 @@ export const TodoListContainer = ({
         body: JSON.stringify(newTodo),
         method: "PUT",
       });
-
-      //setTodos((prevState) => [...prevState, newTodo]);
       setTodoText("");
+    }
+  };
+
+  const handleSearchById = async (event: any) => {
+    event?.preventDefault();
+    if (searchedId) {
+      setReqOptions({
+        ...reqOptions,
+        body: JSON.stringify({
+          id: searchedId,
+        }),
+        method: "GET",
+      });
     }
   };
 
@@ -99,6 +119,43 @@ export const TodoListContainer = ({
     });
   };
 
+  const renderFilterSortingSection = () => {
+    return (
+      <article className="flex justify-between items-center space-x-4">
+        <form action="handleSearchById">
+          <CustomSearchInput
+            type="text"
+            name="todo-list-text-input"
+            id="todo-list-text-input"
+            placeholder="Search..."
+            className={`flex-grow border-[1px]  ${
+              currentTheme === THEME_MODE.light
+                ? "bg-gray-300 text-gray-700"
+                : "bg-gray-100 text-gray-600 border-gray-400  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
+            }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
+            onChange={handleSearchIdChange}
+            onKeyDown={handleSearchById}
+            value={searchedId}
+          />
+        </form>
+
+        <article className="grid justify-start items-start">
+          {reqOptions?.sortOrder === "asc" ? (
+            <ArrowDownUp
+              className="w-4 h-4"
+              onClick={() => handleSortTodos("desc")}
+            />
+          ) : (
+            <ArrowUpDown
+              className="w-4 h-4"
+              onClick={() => handleSortTodos("asc")}
+            />
+          )}
+        </article>
+      </article>
+    );
+  };
+
   return (
     <section
       className={`min-h-screen ${
@@ -121,16 +178,13 @@ export const TodoListContainer = ({
         {renderThemeIconBasedOnTheme()}
       </article>
 
-      <article className="flex space-x-4 ">
-        <ArrowUpDown onClick={() => handleSortTodos("asc")} />
-        <ArrowDownUp onClick={() => handleSortTodos("desc")} />
-      </article>
+      {renderFilterSortingSection()}
 
       <form
-        className="max-w-sm w-full flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2"
+        className="border-t-[1px] border-gray-400  mt-4 pt-4 max-w-sm w-full flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2"
         action="handleAddClick"
       >
-        <input
+        <CustomSearchInput
           type="text"
           name="todo-list-text-input"
           id="todo-list-text-input"

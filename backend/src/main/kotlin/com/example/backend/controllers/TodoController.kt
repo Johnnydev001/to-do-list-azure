@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1")
@@ -32,6 +32,25 @@ import org.springframework.web.bind.annotation.RequestParam
                         RequestMethod.DELETE]
 )
 class TodoController(val todoService: TodoService) {
+
+        @Operation(description = "Get todo by id")
+        @ApiResponses(
+                value =
+                        [
+                                ApiResponse(description = "Success", responseCode = "200"),
+                                ApiResponse(description = "Failure", responseCode = "500")]
+        )
+        @GetMapping("/todos/{id}")
+        fun getAllTodos(@RequestParam id: String): ResponseEntity<TodoModel> {
+
+                return try {
+                        ResponseEntity.ok(todoService.getTodoById(id))
+                } catch (ex: Exception) {
+                        println("Error getting todo by ID due to ${ex.message}")
+
+                        throw Exception("Error getting todo by ID due to ${ex.message}")
+                }
+        }
 
         @Operation(description = "Get all the todos from the database")
         @ApiResponses(

@@ -57,7 +57,12 @@ export const useHandleTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [reqOptions.url, reqOptions.body, reqOptions.method]);
+  }, [
+    reqOptions.url,
+    reqOptions.body,
+    reqOptions.method,
+    reqOptions.sortOrder,
+  ]);
 
   useEffect(() => {
     let isMounted = true;

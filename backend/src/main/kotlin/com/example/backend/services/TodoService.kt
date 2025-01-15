@@ -7,6 +7,16 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(val todoRepository: TodoRepository) {
 
+    fun createOrUpdateTodoById(id: String): TodoModel {
+        try {
+            return todoRepository.findById(id).orElse(null)
+        } catch (ex: Exception) {
+            println("Failed to get todo by ID due to ${ex.message}")
+
+            throw ex
+        }
+    }
+
     fun createOrUpdateTodoById(reqBody: TodoModel) {
         try {
             val id = reqBody.id

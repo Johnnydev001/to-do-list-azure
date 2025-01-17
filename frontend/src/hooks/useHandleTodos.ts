@@ -6,6 +6,7 @@ import {
   deleteTodoById,
   getAllTodos,
   getTodoById,
+  getTodoByText,
 } from "../services/todo.service";
 
 export const useHandleTodos = (
@@ -47,15 +48,15 @@ export const useHandleTodos = (
       }
 
       if (reqOptions?.body) {
-        const id = reqOptions?.body?.id ?? "";
+        const text = reqOptions?.body?.text ?? "";
 
-        if (id) {
+        if (text) {
           if (reqOptions?.method === "GET") {
-            const todoById = await getTodoById({
+            const todoByText = await getTodoByText({
               ...reqOptions,
             });
-            if (todoById) {
-              todos = [todoById];
+            if (todoByText) {
+              todos = [todoByText];
             }
           } else {
             todos = await getAllTodos({

@@ -33,22 +33,22 @@ import org.springframework.web.bind.annotation.RestController
 )
 class TodoController(val todoService: TodoService) {
 
-        @Operation(description = "Get todo by id")
+        @Operation(description = "Get todo by text")
         @ApiResponses(
                 value =
                         [
                                 ApiResponse(description = "Success", responseCode = "200"),
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
-        @GetMapping("/todos/{id}")
-        fun getTodoById(@PathVariable id: String): ResponseEntity<TodoModel> {
+        @GetMapping("/todos/{text}")
+        fun getTodoById(@PathVariable text: String): ResponseEntity<TodoModel> {
 
                 return try {
-                        ResponseEntity.ok(todoService.getTodoById(id))
+                        ResponseEntity.ok(todoService.getTodoByText(text))
                 } catch (ex: Exception) {
-                        println("Error getting todo by ID due to ${ex.message}")
+                        println("Error getting todo by text due to ${ex.message}")
 
-                        throw Exception("Error getting todo by ID due to ${ex.message}")
+                        throw Exception("Error getting todo by text due to ${ex.message}")
                 }
         }
 

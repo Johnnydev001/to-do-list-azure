@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(val todoRepository: TodoRepository) {
 
-    fun getTodoById(id: String): TodoModel {
+    fun getTodoByText(text: String): TodoModel {
         try {
-            return todoRepository.findById(id).orElse(null)
+            return todoRepository.findByText(text)
         } catch (ex: Exception) {
             println("Failed to get todo by ID due to ${ex.message}")
 
@@ -42,9 +42,9 @@ class TodoService(val todoRepository: TodoRepository) {
             // }
             // todoRepository.saveAll(todosToInsert)
             when (sortOrder) {
-                "asc" -> return todoRepository.findAllByOrderByIdAsc()
+                "asc" -> return todoRepository.findAllByOrderByTextAsc()
                 else -> {
-                    return todoRepository.findAllByOrderByIdDesc()
+                    return todoRepository.findAllByOrderByTextDesc()
                 }
             }
         } catch (ex: Exception) {

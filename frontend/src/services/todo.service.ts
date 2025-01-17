@@ -1,10 +1,10 @@
 import { RequestOptions, Todo } from "../types/todo.type";
 
-export const getTodoById = async (
+export const getTodoByText = async (
   reqOptions: RequestOptions
 ): Promise<Todo | null | undefined> => {
   try {
-    let requestUrl = reqOptions?.url + "/" + reqOptions?.body?.id;
+    let requestUrl = reqOptions?.url + "/" + reqOptions?.body?.text;
 
     const response = await fetch(requestUrl, {
       headers: reqOptions.headers,
@@ -12,14 +12,14 @@ export const getTodoById = async (
     });
 
     if (!response.ok) {
-      throw new Error("Failed to get todo by id");
+      throw new Error("Failed to get todo by text");
     }
     const todoById = response?.json();
 
     return todoById;
   } catch (error) {
     throw new Error(
-      `Failed to get todo by id due to: ${JSON.stringify(error)}`
+      `Failed to get todo by text due to: ${JSON.stringify(error)}`
     );
   }
 };

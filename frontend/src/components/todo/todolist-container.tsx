@@ -16,6 +16,7 @@ import { Todo } from "../../types/todo.type";
 import { THEME_MODE, ThemeContext } from "../../contexts";
 import { useHandleTodos } from "../../hooks/useHandleTodos";
 import { CustomSearchInput } from "../ui/searchInput";
+import { PaginationContainer } from "../pagination/pagination-container";
 
 export const TodoListContainer = ({
   setThemeMode = () => {},
@@ -25,9 +26,11 @@ export const TodoListContainer = ({
   const currentTheme = useContext(ThemeContext);
 
   const [todoText, setTodoText] = useState<string>("");
-  const [searchedId, setSearchedId] = useState<string>("");
+  const [searchedText, setSearchedText] = useState<string>("");
 
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
+  const [selectedPagination, setSelectedPagination] = useState<number>(0);
+
   const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
     method: "GET",
@@ -49,10 +52,10 @@ export const TodoListContainer = ({
     setTodoText(todoText);
   };
 
-  const handleSearchIdChange = (event: any) => {
-    const id = event?.target?.value ?? "";
+  const handleSearchTextChange = (event: any) => {
+    const text = event?.target?.value ?? "";
 
-    setSearchedId(id);
+    setSearchedText(text);
   };
 
   const handleAddClick = async (event: any) => {
@@ -71,13 +74,13 @@ export const TodoListContainer = ({
     }
   };
 
-  const handleSearchById = async (event: any) => {
+  const handleSearchByText = async (event: any) => {
     event?.preventDefault();
-    if (searchedId) {
+    if (searchedText) {
       setReqOptions({
         ...reqOptions,
         body: {
-          id: searchedId,
+          text: searchedText,
         },
         method: "GET",
       });
@@ -99,7 +102,7 @@ export const TodoListContainer = ({
           id: todoItemId,
         },
       });
-      setSearchedId("");
+      setSearchedText("");
     }
   };
 
@@ -130,7 +133,7 @@ export const TodoListContainer = ({
   const renderFilterSortingSection = () => {
     return (
       <article className="flex justify-between items-center space-x-4">
-        <form onSubmit={handleSearchById}>
+        <form onSubmit={handleSearchByText}>
           <CustomSearchInput
             type="text"
             name="todo-list-search-text-input"
@@ -141,8 +144,8 @@ export const TodoListContainer = ({
                 ? "bg-white text-gray-700 border-gray-400 border-[1px]"
                 : "bg-white text-gray-700 border-gray-400 border-[1px]  focus:border-gray-600 hover:border-gray-600 placeholder:text-gray-400"
             }   cursor-pointer p-2 rounded-md placeholder:text-sm `}
-            onChange={handleSearchIdChange}
-            value={searchedId}
+            onChange={handleSearchTextChange}
+            value={searchedText}
           />
         </form>
 
@@ -238,13 +241,16 @@ export const TodoListContainer = ({
             handleRemoveTodoListItem={handleRemoveTodoListItem}
           />
 
-          <button
-            onClick={handleDeleteAll}
-            className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
-          >
-            <Trash2 role="button" className="w-4 h-4 mr-2" />
-            Delete all
-          </button>
+          <div className="grid justify-around items-center">
+            <PaginationContainer items={[1, 2, 3]} setSelectedPagination={setSelectedPagination} />
+            <button
+              onClick={handleDeleteAll}
+              className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
+            >
+              <Trash2 role="button" className="w-4 h-4 mr-2" />
+              Delete all
+            </button>
+          </div>
         </>
       )}
     </section>

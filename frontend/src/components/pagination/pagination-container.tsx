@@ -10,7 +10,7 @@ export const PaginationContainer = ({
       <li
         onClick={() => setSelectedPagination(item)}
         key={index}
-        className="p-1 bg-white text-xs rounded-md text-center w-10 cursor-pointer"
+        className="p-1 bg-white text-xs rounded-md text-center w-5 cursor-pointer hover:bg-gray-400 hover:text-white"
       >
         {item}
       </li>
@@ -18,8 +18,12 @@ export const PaginationContainer = ({
   };
 
   return (
-    <nav role="navigation" className="text-center flex space-x-2">
-      {items?.length && <ul role="list">{renderPaginationItems()}</ul>}
+    <nav role="navigation" className="col-start-6 col-end-6">
+      {items?.length && (
+        <ul role="list" className="text-center flex space-x-1 justify-center">
+          {renderPaginationItems()}
+        </ul>
+      )}
     </nav>
   );
 };

@@ -241,15 +241,18 @@ export const TodoListContainer = ({
             handleRemoveTodoListItem={handleRemoveTodoListItem}
           />
 
-          <div className="grid justify-around items-center">
-            <PaginationContainer items={[1, 2, 3]} setSelectedPagination={setSelectedPagination} />
+          <div className="grid grid-cols-6 justify-around items-center w-1/2 mt-4">
             <button
               onClick={handleDeleteAll}
-              className="mt-4 p-2 text-white rounded-md flex items-center cursor-pointer bg-red-700 hover:bg-red-600"
+              className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600 col-start-3 col-end-5"
             >
-              <Trash2 role="button" className="w-4 h-4 mr-2" />
-              Delete all
+              <Trash2 role="button" className="w-4 h-4 " />
+              <span>Delete all</span>
             </button>
+            <PaginationContainer
+              items={[1, 2, 3]}
+              setSelectedPagination={setSelectedPagination}
+            />
           </div>
         </>
       )}

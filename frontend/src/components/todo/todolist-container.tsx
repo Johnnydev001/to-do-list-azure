@@ -81,11 +81,11 @@ export const TodoListContainer = ({
         },
         method: "GET",
       });
-      setSearchedId("");
     } else {
       setReqOptions({
         ...reqOptions,
         method: "GET",
+        body: undefined,
       });
     }
   };
@@ -99,6 +99,7 @@ export const TodoListContainer = ({
           id: todoItemId,
         },
       });
+      setSearchedId("");
     }
   };
 
@@ -122,6 +123,7 @@ export const TodoListContainer = ({
       ...reqOptions,
       method: "GET",
       sortOrder,
+      body: undefined,
     });
   };
 
@@ -133,7 +135,7 @@ export const TodoListContainer = ({
             type="text"
             name="todo-list-search-text-input"
             id="todo-list-search-text-input"
-            placeholder="Search todo..."
+            placeholder="Search todo and click enter"
             className={`flex-grow border-[1px]  ${
               currentTheme === THEME_MODE.light
                 ? "bg-white text-gray-700 border-gray-400 border-[1px]"

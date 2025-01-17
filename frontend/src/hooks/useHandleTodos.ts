@@ -7,7 +7,6 @@ import {
   getAllTodos,
   getTodoById,
 } from "../services/todo.service";
-import { json } from "stream/consumers";
 
 export const useHandleTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
@@ -19,6 +18,7 @@ export const useHandleTodos = (
   const fetchData = useCallback(async () => {
     setError(null);
     setIsLoading(true);
+    let todos: Todo[] | null | undefined = [];
 
     try {
       switch (reqOptions?.method?.toLowerCase()) {
@@ -45,21 +45,31 @@ export const useHandleTodos = (
         default:
           break;
       }
-      let todos: Todo[] | null | undefined = [];
 
-      if (reqOptions?.body?.id) {
-        const todoById = await getTodoById({
-          ...reqOptions,
-        });
+      if (reqOptions?.body) {
+        const id = reqOptions?.body?.id ?? "";
 
-        console.log(todoById);
+        if (id) {
+          if (reqOptions?.method === "GET") {
+            const todoById = await getTodoById({
+              ...reqOptions,
+            });
+            if (todoById) {
+              todos = [todoById];
+            }
+          } else {
+            todos = await getAllTodos({
+              ...reqOptions,
+              method: "GET",
+            });
+          }
+        }
       } else {
         todos = await getAllTodos({
           ...reqOptions,
           method: "GET",
         });
       }
-
       setTodos(todos);
     } catch (error) {
       setIsLoading(false);
@@ -68,12 +78,7 @@ export const useHandleTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [
-    reqOptions.url,
-    reqOptions.body,
-    reqOptions.method,
-    reqOptions.sortOrder,
-  ]);
+  }, [reqOptions.body, reqOptions.method, reqOptions.sortOrder]);
 
   useEffect(() => {
     let isMounted = true;

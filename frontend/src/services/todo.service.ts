@@ -1,6 +1,8 @@
 import { RequestOptions, Todo } from "../types/todo.type";
 
-export const getTodoById = async (reqOptions: RequestOptions) => {
+export const getTodoById = async (
+  reqOptions: RequestOptions
+): Promise<Todo | null | undefined> => {
   try {
     let requestUrl = reqOptions?.url + "/" + reqOptions?.body?.id;
 
@@ -12,6 +14,9 @@ export const getTodoById = async (reqOptions: RequestOptions) => {
     if (!response.ok) {
       throw new Error("Failed to get todo by id");
     }
+    const todoById = response?.json();
+
+    return todoById;
   } catch (error) {
     throw new Error(
       `Failed to get todo by id due to: ${JSON.stringify(error)}`

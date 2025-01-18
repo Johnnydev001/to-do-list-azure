@@ -1,16 +1,25 @@
 export const PaginationContainer = ({
-  items = [],
-  setSelectedPagination = () => {},
+  totalPages = 1,
+  currentPage = 1,
+  setCurrentPage = () => {},
 }: {
-  items: Array<number>;
-  setSelectedPagination: (x: number) => void;
+  totalPages: number;
+  currentPage: number;
+  setCurrentPage: (x: number) => void;
 }) => {
   const renderPaginationItems = () => {
-    return items?.map((item: number, index: number) => (
+    const pagesArray = Array.from(
+      { length: totalPages },
+      (_, index) => index + 1
+    );
+
+    return pagesArray?.map((item: number, index: number) => (
       <li
-        onClick={() => setSelectedPagination(item)}
-        key={index}
-        className="p-1 bg-white text-xs rounded-md text-center w-5 cursor-pointer hover:bg-gray-400 hover:text-white"
+        onClick={() => setCurrentPage(item)}
+        key={item + index}
+        className={`${
+          currentPage === item ? "bg-gray-500 text-white" : ""
+        }  p-2 bg-white text-xs rounded-md text-center w-10 cursor-pointer hover:bg-gray-400 hover:text-white`}
       >
         {item}
       </li>
@@ -18,8 +27,8 @@ export const PaginationContainer = ({
   };
 
   return (
-    <nav role="navigation" className="col-start-6 col-end-6">
-      {items?.length && (
+    <nav role="navigation" aria-label="pagination" className="col-start-6 col-end-6">
+      {totalPages && (
         <ul role="list" className="text-center flex space-x-1 justify-center">
           {renderPaginationItems()}
         </ul>

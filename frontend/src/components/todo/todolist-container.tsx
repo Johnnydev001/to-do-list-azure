@@ -17,6 +17,7 @@ import { THEME_MODE, ThemeContext } from "../../contexts";
 import { useHandleTodos } from "../../hooks/useHandleTodos";
 import { CustomSearchInput } from "../ui/searchInput";
 import { PaginationContainer } from "../pagination/pagination-container";
+import { useHandlePagination } from "../../hooks/useHandlePagination";
 
 export const TodoListContainer = ({
   setThemeMode = () => {},
@@ -29,7 +30,8 @@ export const TodoListContainer = ({
   const [searchedText, setSearchedText] = useState<string>("");
 
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
-  const [selectedPagination, setSelectedPagination] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
 
   const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
@@ -45,6 +47,8 @@ export const TodoListContainer = ({
   const { isLoading, error } = useHandleTodos(setTodos, {
     ...reqOptions,
   });
+
+  useHandlePagination(todos, setTodos, currentPage, itemsPerPage);
 
   const handleTextChange = (event: any) => {
     const todoText = event?.target?.value ?? "";
@@ -241,7 +245,7 @@ export const TodoListContainer = ({
             handleRemoveTodoListItem={handleRemoveTodoListItem}
           />
 
-          <div className="grid grid-cols-6 justify-around items-center w-1/2 mt-4">
+          <div className="grid grid-cols-6 grid-rows-2 justify-around items-center w-1/2 mt-4">
             <button
               onClick={handleDeleteAll}
               className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600 col-start-3 col-end-5"
@@ -250,8 +254,9 @@ export const TodoListContainer = ({
               <span>Delete all</span>
             </button>
             <PaginationContainer
-              items={[1, 2, 3]}
-              setSelectedPagination={setSelectedPagination}
+              totalPages={Math.ceil(todos.length / itemsPerPage)}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         </>

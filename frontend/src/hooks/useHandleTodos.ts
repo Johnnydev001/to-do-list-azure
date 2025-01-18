@@ -5,7 +5,6 @@ import {
   deleteAllTodos,
   deleteTodoById,
   getAllTodos,
-  getTodoById,
   getTodoByText,
 } from "../services/todo.service";
 

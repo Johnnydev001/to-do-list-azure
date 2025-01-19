@@ -31,7 +31,7 @@ export const TodoListContainer = ({
 
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 50;
 
   const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
@@ -245,10 +245,10 @@ export const TodoListContainer = ({
             handleRemoveTodoListItem={handleRemoveTodoListItem}
           />
 
-          <div className="grid grid-cols-6 grid-rows-2 justify-around items-center w-1/2 mt-4">
+          <div className="flex justify-between items-center max-w-sm w-full mt-4">
             <button
               onClick={handleDeleteAll}
-              className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600 col-start-3 col-end-5"
+              className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600"
             >
               <Trash2 role="button" className="w-4 h-4 " />
               <span>Delete all</span>

@@ -18,8 +18,8 @@ export const PaginationContainer = ({
         onClick={() => setCurrentPage(item)}
         key={item + index}
         className={`${
-          currentPage === item ? "bg-gray-500 text-white" : ""
-        }  p-2 bg-white text-xs rounded-md text-center w-10 cursor-pointer hover:bg-gray-400 hover:text-white`}
+          currentPage === item ? "bg-gray-500 text-white" : "bg-white text-black"
+        }  p-2 text-xs rounded-md text-center w-10 cursor-pointer hover:bg-gray-400 hover:text-white`}
       >
         {item}
       </li>
@@ -27,7 +27,7 @@ export const PaginationContainer = ({
   };
 
   return (
-    <nav role="navigation" aria-label="pagination" className="col-start-6 col-end-6">
+    <nav role="navigation" aria-label="pagination">
       {totalPages && (
         <ul role="list" className="text-center flex space-x-1 justify-center">
           {renderPaginationItems()}

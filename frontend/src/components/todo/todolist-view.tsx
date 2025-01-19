@@ -6,9 +6,13 @@ import { THEME_MODE, ThemeContext } from "../../contexts";
 export const TodoListView = ({
   todoList = [],
   handleRemoveTodoListItem = () => {},
+  handleEditTodoListItem = () => {},
+  setTodoToEdit = () => {},
 }: {
   todoList: Todo[] | null | undefined;
   handleRemoveTodoListItem: (id: string) => void;
+  handleEditTodoListItem: () => void;
+  setTodoToEdit: (todo: Todo) => void;
 }) => {
   const currentTheme = useContext(ThemeContext);
   const renderTodoListItems = () => {
@@ -25,6 +29,8 @@ export const TodoListView = ({
           id={todo.id}
           text={todo.text}
           handleRemoveTodoListItem={handleRemoveTodoListItem}
+          handleEditTodoListItem={handleEditTodoListItem}
+          setTodoToEdit={setTodoToEdit}
         />
       </li>
     ));

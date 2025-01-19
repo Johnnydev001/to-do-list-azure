@@ -10,7 +10,8 @@ import {
 
 export const useHandleTodos = (
   setTodos: (todos: Array<Todo> | undefined | null) => void,
-  reqOptions: RequestOptions
+  reqOptions: RequestOptions,
+  currentPage = 1
 ) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>();
@@ -47,6 +48,7 @@ export const useHandleTodos = (
       }
 
       if (reqOptions?.body) {
+        const id = reqOptions?.body?.id ?? "";
         const text = reqOptions?.body?.text ?? "";
 
         if (text) {
@@ -58,11 +60,12 @@ export const useHandleTodos = (
               todos = [todoByText];
             }
           } else {
-            todos = await getAllTodos({
-              ...reqOptions,
-              method: "GET",
-            });
           }
+        } else if (id) {
+          todos = await getAllTodos({
+            ...reqOptions,
+            method: "GET",
+          });
         }
       } else {
         todos = await getAllTodos({
@@ -78,7 +81,7 @@ export const useHandleTodos = (
       setIsLoading(false);
       setError(null);
     }
-  }, [reqOptions.body, reqOptions.method, reqOptions.sortOrder]);
+  }, [reqOptions.body, reqOptions.method, reqOptions.sortOrder, currentPage]);
 
   useEffect(() => {
     let isMounted = true;

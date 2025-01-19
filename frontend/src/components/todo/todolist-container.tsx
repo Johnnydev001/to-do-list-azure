@@ -46,7 +46,7 @@ export const TodoListContainer = ({
 
   const { isLoading, error } = useHandleTodos(setTodos, {
     ...reqOptions,
-  });
+  }, currentPage);
 
   useHandlePagination(todos, setTodos, currentPage, itemsPerPage);
 
@@ -254,7 +254,7 @@ export const TodoListContainer = ({
               <span>Delete all</span>
             </button>
             <PaginationContainer
-              totalPages={Math.ceil(todos.length / itemsPerPage)}
+              totalPages={Math.ceil(100 / itemsPerPage)}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

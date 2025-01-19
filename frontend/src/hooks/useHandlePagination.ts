@@ -1,18 +1,16 @@
 import { useCallback, useEffect } from "react";
 
 export const useHandlePagination = (
-  items: Array<any> | null | undefined,
+  items: Array<any> | null | undefined = [],
   setItems: (x: Array<any>) => void,
   currentPage: number = 1,
   itemsPerPage: number = 10
 ) => {
   const fetchData = useCallback(async () => {
-    if (items?.length) {
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = currentPage * itemsPerPage;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
 
-      setItems(items?.slice(startIndex, endIndex));
-    }
+    setItems(items?.slice(startIndex, endIndex));
   }, [currentPage]);
 
   useEffect(() => {

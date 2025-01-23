@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -78,7 +77,6 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Success", responseCode = "200"),
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
-        @PostMapping("/todos", consumes = ["application/json"])
         @PutMapping("/todos", consumes = ["application/json"])
         fun createOrUpdateTodoById(@RequestBody reqBody: TodoModel) {
                 todoService.createOrUpdateTodoById(reqBody)

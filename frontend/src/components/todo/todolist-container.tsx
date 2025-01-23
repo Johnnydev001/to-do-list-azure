@@ -31,7 +31,7 @@ export const TodoListContainer = ({
 
   const [todos, setTodos] = useState<Array<Todo> | null | undefined>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 25;
 
   const [reqOptions, setReqOptions] = useState<any>({
     url: `${import.meta.env.VITE_BACKEND_ENDOINT}/api/v1/todos`,
@@ -44,9 +44,13 @@ export const TodoListContainer = ({
     origin: window.location.origin,
   });
 
-  const { isLoading, error } = useHandleTodos(setTodos, {
-    ...reqOptions,
-  }, currentPage);
+  const { isLoading, error } = useHandleTodos(
+    setTodos,
+    {
+      ...reqOptions,
+    },
+    currentPage
+  );
 
   useHandlePagination(todos, setTodos, currentPage, itemsPerPage);
 
@@ -65,13 +69,17 @@ export const TodoListContainer = ({
   const handleAddClick = async (event: any) => {
     event?.preventDefault();
     if (todoText?.trim() != "") {
-      const newTodo: Todo = {
+      let newTodo: Todo = {
         text: todoText,
-        id: generateRandomId(),
+        id:
+          reqOptions.sortOrder === "asc"
+            ? String(Number(todos.at(-1).id) + 1)
+            : String(Number(todos.at(0).id) + 1),
       };
+
       setReqOptions({
         ...reqOptions,
-        body: JSON.stringify(newTodo),
+        body: newTodo,
         method: "PUT",
       });
       setTodoText("");
@@ -231,10 +239,8 @@ export const TodoListContainer = ({
       )}
 
       {error && (
-        <section className="p-4 text-center text-md shadow-md rounded-md">
-          <h2 className="text-xl font-semibold text-center">
-            Failed to load todos
-          </h2>
+        <section className="p-4 text-center text-md shadow-md rounded-md bg-red-600 text-white">
+          <h2 className="text-xl font-semibold text-center">{error}</h2>
         </section>
       )}
 

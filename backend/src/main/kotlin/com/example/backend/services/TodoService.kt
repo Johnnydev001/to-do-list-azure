@@ -1,5 +1,6 @@
 package com.example.backend.services
 
+import com.example.backend.dto.TodoDTO
 import com.example.backend.models.TodoModel
 import com.example.backend.repositories.TodoRepository
 import org.springframework.stereotype.Service
@@ -7,9 +8,14 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(val todoRepository: TodoRepository) {
 
-    fun getTodoByText(text: String): TodoModel {
+    fun getTodoByText(text: String): TodoDTO {
         try {
-            return todoRepository.findByText(text)
+
+            var todo: TodoModel = todoRepository.findByText(text)
+
+            val todoDTO: TodoDTO = TodoDTO(id = todo.id, text = todo.text)
+
+            return todoDTO
         } catch (ex: Exception) {
             println("Failed to get todo by ID due to ${ex}")
 
@@ -27,18 +33,23 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun getAllTodos(sortOrder: String = "asc"): List<TodoModel> {
+    fun getAllTodos(sortOrder: String = "asc"): List<TodoDTO> {
         try {
             // For testing purposes:
             // val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}", text = "works ${it}")
             // }
             // todoRepository.saveAll(todosToInsert)
+            var todoList: List<TodoModel> = emptyList()
+
             when (sortOrder) {
-                "asc" -> return todoRepository.findAllByOrderByTextAsc()
+                "asc" -> todoList = todoRepository.findAllByOrderByTextAsc()
                 else -> {
-                    return todoRepository.findAllByOrderByTextDesc()
+                    todoList = todoRepository.findAllByOrderByTextDesc()
                 }
             }
+            var todoDtoList: List<TodoDTO> =
+                    todoList.map { it -> TodoDTO(id = it.id, text = it.text) }
+            return todoDtoList
         } catch (ex: Exception) {
             println("Failed to get all todos due to todo due to ${ex}")
 

@@ -1,5 +1,6 @@
 package com.example.backend.controllers
 
+import com.example.backend.dto.TodoDTO
 import com.example.backend.models.TodoModel
 import com.example.backend.services.TodoService
 import io.swagger.v3.oas.annotations.Operation
@@ -42,7 +43,7 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos/{text}")
-        fun getTodoById(@Valid @PathVariable text: String): ResponseEntity<TodoModel> {
+        fun getTodoById(@Valid @PathVariable text: String): ResponseEntity<TodoDTO> {
 
                 return try {
                         ResponseEntity.ok(todoService.getTodoByText(text))
@@ -61,7 +62,7 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos")
-        fun getAllTodos(@Valid @RequestParam sortOrder: String): ResponseEntity<List<TodoModel>> {
+        fun getAllTodos(@Valid @RequestParam sortOrder: String): ResponseEntity<List<TodoDTO>> {
 
                 return try {
                         ResponseEntity.ok(todoService.getAllTodos(sortOrder))

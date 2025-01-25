@@ -1,5 +1,6 @@
 package com.example.backend.services
 
+import com.example.backend.controllers.TodoModelRequest
 import com.example.backend.dto.TodoDTO
 import com.example.backend.models.TodoModel
 import com.example.backend.repositories.TodoRepository
@@ -23,9 +24,11 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun createTodoById(reqBody: TodoModel) {
+    fun createTodoById(reqBody: TodoModelRequest) {
         try {
-            todoRepository.save(reqBody)
+
+            val todoModelToCreate = TodoModel(id = reqBody.id, text = reqBody.text)
+            todoRepository.save(todoModelToCreate)
         } catch (ex: Exception) {
             println("Failed to create or update new todo due to ${ex}")
 

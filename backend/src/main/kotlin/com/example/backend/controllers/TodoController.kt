@@ -1,14 +1,15 @@
 package com.example.backend.controllers
 
 import com.example.backend.dto.TodoDTO
-import com.example.backend.models.TodoModel
 import com.example.backend.services.TodoService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+
+data class TodoModelRequest(val id: String?, @NotBlank val text: String = "")
 
 @RestController
 @RequestMapping("/api/v1")
@@ -80,11 +83,24 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @PostMapping("/todos", consumes = ["application/json"])
-        fun createTodoById(@Valid @RequestBody reqBody: TodoModel) {
+        fun createTodoById(
+                @Valid @RequestBody reqBody: TodoModelRequest,
+                bindingResult: BindingResult
+        ): ResponseEntity<*> {
+
+                if (bindingResult.hasErrors()) {
+                        val validationErrors: List<String> =
+                                bindingResult.fieldErrors.map { it ->
+                                        "${it.field}:${it.defaultMessage}"
+                                }
+                        ResponseEntity.badRequest().body(validationErrors)
+                }
                 try {
                         todoService.createTodoById(reqBody)
+                        return ResponseEntity.ok("Todo created with success")
                 } catch (ex: Exception) {
-                        println("Failed to create todo by id due to ${ex.message}")
+                        return ResponseEntity.badRequest()
+                                .body("Failed to create todo by id due to ${ex.message}")
                 }
         }
 

@@ -5,12 +5,14 @@ import com.example.backend.services.TodoService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -40,7 +42,7 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos/{text}")
-        fun getTodoById(@PathVariable text: String): ResponseEntity<TodoModel> {
+        fun getTodoById(@Valid @PathVariable text: String): ResponseEntity<TodoModel> {
 
                 return try {
                         ResponseEntity.ok(todoService.getTodoByText(text))
@@ -59,14 +61,13 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @GetMapping("/todos")
-        fun getAllTodos(@RequestParam sortOrder: String): ResponseEntity<List<TodoModel>> {
+        fun getAllTodos(@Valid @RequestParam sortOrder: String): ResponseEntity<List<TodoModel>> {
 
                 return try {
                         ResponseEntity.ok(todoService.getAllTodos(sortOrder))
                 } catch (ex: Exception) {
                         println("Error getting all todos due to ${ex.message}")
-
-                        throw Exception("Error getting all todos due to ${ex.message}")
+                        ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
                 }
         }
 
@@ -77,9 +78,13 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Success", responseCode = "200"),
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
-        @PutMapping("/todos", consumes = ["application/json"])
-        fun createOrUpdateTodoById(@RequestBody reqBody: TodoModel) {
-                todoService.createOrUpdateTodoById(reqBody)
+        @PostMapping("/todos", consumes = ["application/json"])
+        fun createTodoById(@Valid @RequestBody reqBody: TodoModel) {
+                try {
+                        todoService.createTodoById(reqBody)
+                } catch (ex: Exception) {
+                        println("Failed to create todo by id due to ${ex.message}")
+                }
         }
 
         @Operation(description = "Delete existing todo")
@@ -90,7 +95,7 @@ class TodoController(val todoService: TodoService) {
                                 ApiResponse(description = "Failure", responseCode = "500")]
         )
         @DeleteMapping("/todos/{id}")
-        fun deleteTodoById(@PathVariable("id") id: String = "") {
+        fun deleteTodoById(@Valid @PathVariable("id") id: String = "") {
                 return todoService.deleteTodoById(id)
         }
 

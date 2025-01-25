@@ -71,16 +71,12 @@ export const TodoListContainer = ({
     if (todoText?.trim() != "") {
       let newTodo: Todo = {
         text: todoText,
-        id:
-          reqOptions.sortOrder === "asc"
-            ? String(Number(todos.at(-1).id) + 1)
-            : String(Number(todos.at(0).id) + 1),
       };
 
       setReqOptions({
         ...reqOptions,
         body: newTodo,
-        method: "PUT",
+        method: "post",
       });
       setTodoText("");
     }
@@ -103,6 +99,7 @@ export const TodoListContainer = ({
         body: undefined,
       });
     }
+    setSearchedText("");
   };
 
   const handleRemoveTodoListItem = (todoItemId: string) => {
@@ -114,8 +111,8 @@ export const TodoListContainer = ({
           id: todoItemId,
         },
       });
-      setSearchedText("");
     }
+    setSearchedText("");
   };
 
   const handleDeleteAll = () => {

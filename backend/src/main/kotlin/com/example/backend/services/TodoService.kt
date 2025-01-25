@@ -11,25 +11,17 @@ class TodoService(val todoRepository: TodoRepository) {
         try {
             return todoRepository.findByText(text)
         } catch (ex: Exception) {
-            println("Failed to get todo by ID due to ${ex.message}")
+            println("Failed to get todo by ID due to ${ex}")
 
             throw ex
         }
     }
 
-    fun createOrUpdateTodoById(reqBody: TodoModel) {
+    fun createTodoById(reqBody: TodoModel) {
         try {
-            val id = reqBody.id
-            val existingTodo = todoRepository.findById(id).orElse(null)
-            if (existingTodo !== null) {
-
-                val updatedTodo = existingTodo.copy(id = reqBody.id, text = reqBody.text)
-                todoRepository.save(updatedTodo)
-            } else {
-                todoRepository.save(reqBody)
-            }
+            todoRepository.save(reqBody)
         } catch (ex: Exception) {
-            println("Failed to create or update new todo due to ${ex.message}")
+            println("Failed to create or update new todo due to ${ex}")
 
             throw ex
         }
@@ -48,7 +40,7 @@ class TodoService(val todoRepository: TodoRepository) {
                 }
             }
         } catch (ex: Exception) {
-            println("Failed to get all todos due to todo due to ${ex.message}")
+            println("Failed to get all todos due to todo due to ${ex}")
 
             throw ex
         }
@@ -64,7 +56,7 @@ class TodoService(val todoRepository: TodoRepository) {
                 todoRepository.delete(existingTodo)
             }
         } catch (ex: Exception) {
-            println("Failed to delete todo due to ${ex.message}")
+            println("Failed to delete todo due to ${ex}")
 
             throw ex
         }
@@ -74,7 +66,7 @@ class TodoService(val todoRepository: TodoRepository) {
         try {
             todoRepository.deleteAll()
         } catch (ex: Exception) {
-            println("Failed to delete all todos due to ${ex.message}")
+            println("Failed to delete all todos due to ${ex}")
             throw ex
         }
     }

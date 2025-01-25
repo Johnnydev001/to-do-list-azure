@@ -23,7 +23,7 @@ export const useHandleTodos = (
 
     try {
       switch (reqOptions?.method?.toLowerCase()) {
-        case "put":
+        case "post":
           await createOrUpdateTodoById({
             ...reqOptions,
             body: JSON.stringify(reqOptions.body),
@@ -43,42 +43,30 @@ export const useHandleTodos = (
               method: "DELETE",
             });
           }
-
           break;
-        default:
-          break;
-      }
+        case "get":
+          const text = reqOptions?.body?.text ?? "";
 
-      if (reqOptions?.body) {
-        const id = reqOptions?.body?.id ?? "";
-        const text = reqOptions?.body?.text ?? "";
-
-        if (text) {
-          if (reqOptions?.method === "GET") {
+          if (text) {
             const todoByText = await getTodoByText({
               ...reqOptions,
             });
             if (todoByText) {
               todos = [todoByText];
             }
-          } else {
-            todos = await getAllTodos({
-              ...reqOptions,
-              method: "GET",
-            });
           }
-        } else if (id) {
-          todos = await getAllTodos({
-            ...reqOptions,
-            method: "GET",
-          });
-        }
-      } else {
+          break;
+        default:
+          break;
+      }
+
+      if (!todos.length) {
         todos = await getAllTodos({
           ...reqOptions,
           method: "GET",
         });
       }
+
       setTodos(todos);
     } catch (error) {
       setIsLoading(false);

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class TodoModel(
         @Id
         @field:Schema(description = "The ID of the todo", example = "1", type = "String")
-        val id: String = "",
+        var id: String?,
         @field:Schema(
                 description = "The text of the todo",
                 example = "Work on Spring Boot",

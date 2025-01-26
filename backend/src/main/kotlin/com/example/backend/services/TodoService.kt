@@ -1,30 +1,35 @@
 package com.example.backend.services
 
+import NotFoundException
 import com.example.backend.controllers.TodoModelRequest
 import com.example.backend.dto.TodoDTO
 import com.example.backend.models.TodoModel
 import com.example.backend.repositories.TodoRepository
 import org.springframework.stereotype.Service
 
+interface TodoServiceInterface {
+    fun getTodoByText(text: String = ""): TodoDTO
+    fun createTodoById(reqBody: TodoModelRequest)
+    fun getAllTodos(sortOrder: String): List<TodoDTO>
+    fun deleteTodoById(id: String)
+    fun deleteAllTodos()
+}
+
 @Service
-class TodoService(val todoRepository: TodoRepository) {
+class TodoService(val todoRepository: TodoRepository) : TodoServiceInterface {
 
-    fun getTodoByText(text: String): TodoDTO {
-        try {
+    override fun getTodoByText(text: String): TodoDTO {
+        var todo: TodoModel =
+                todoRepository.findByText(text).orElseThrow {
+                    NotFoundException(message = "Todo not found with text ${text}")
+                }
 
-            var todo: TodoModel = todoRepository.findByText(text)
+        val todoDTO: TodoDTO = TodoDTO(id = todo.id, text = todo.text)
 
-            val todoDTO: TodoDTO = TodoDTO(id = todo.id, text = todo.text)
-
-            return todoDTO
-        } catch (ex: Exception) {
-            println("Failed to get todo by ID due to ${ex}")
-
-            throw ex
-        }
+        return todoDTO
     }
 
-    fun createTodoById(reqBody: TodoModelRequest) {
+    override fun createTodoById(reqBody: TodoModelRequest) {
         try {
 
             val todoModelToCreate = TodoModel(id = reqBody.id, text = reqBody.text)
@@ -36,18 +41,14 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun getAllTodos(sortOrder: String = "asc"): List<TodoDTO> {
+    override fun getAllTodos(sortOrder: String): List<TodoDTO> {
         try {
-            // For testing purposes:
-            // val todosToInsert = (0..99).map { it -> TodoModel(id = "${it}", text = "works ${it}")
-            // }
-            // todoRepository.saveAll(todosToInsert)
-            var todoList: List<TodoModel> = emptyList()
+            var todoList: List<TodoModel>
 
             when (sortOrder) {
-                "asc" -> todoList = todoRepository.findAllByOrderByTextAsc()
+                "asc" -> todoList = todoRepository.findAllByOrderByTextAsc().orElse(emptyList())
                 else -> {
-                    todoList = todoRepository.findAllByOrderByTextDesc()
+                    todoList = todoRepository.findAllByOrderByTextDesc().orElse(emptyList())
                 }
             }
             var todoDtoList: List<TodoDTO> =
@@ -60,15 +61,14 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun deleteTodoById(id: String) {
+    override fun deleteTodoById(id: String) {
 
         try {
-
-            val existingTodo = todoRepository.findById(id).orElse(null)
-            if (existingTodo !== null) {
-
-                todoRepository.delete(existingTodo)
-            }
+            val existingTodo: TodoModel =
+                    todoRepository.findById(id).orElseThrow {
+                        NotFoundException(message = "Todo not found with ${id})")
+                    }
+            todoRepository.delete(existingTodo)
         } catch (ex: Exception) {
             println("Failed to delete todo due to ${ex}")
 
@@ -76,12 +76,7 @@ class TodoService(val todoRepository: TodoRepository) {
         }
     }
 
-    fun deleteAllTodos() {
-        try {
-            todoRepository.deleteAll()
-        } catch (ex: Exception) {
-            println("Failed to delete all todos due to ${ex}")
-            throw ex
-        }
+    override fun deleteAllTodos() {
+        todoRepository.deleteAll()
     }
 }

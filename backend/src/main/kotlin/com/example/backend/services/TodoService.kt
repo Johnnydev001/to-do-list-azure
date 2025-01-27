@@ -1,5 +1,6 @@
 package com.example.backend.services
 
+import GeneralException
 import NotFoundException
 import com.example.backend.controllers.TodoModelRequest
 import com.example.backend.dto.TodoDTO
@@ -32,12 +33,13 @@ class TodoService(val todoRepository: TodoRepository) : TodoServiceInterface {
     override fun createTodoById(reqBody: TodoModelRequest) {
         try {
 
+            // TODO: criar error handling com custom exception
             val todoModelToCreate = TodoModel(id = reqBody.id, text = reqBody.text)
             todoRepository.save(todoModelToCreate)
         } catch (ex: Exception) {
-            println("Failed to create or update new todo due to ${ex}")
-
-            throw ex
+            throw GeneralException(
+                    message = ex.message ?: "Failed to create todo with id ${reqBody.id}"
+            )
         }
     }
 
@@ -55,25 +57,19 @@ class TodoService(val todoRepository: TodoRepository) : TodoServiceInterface {
                     todoList.map { it -> TodoDTO(id = it.id, text = it.text) }
             return todoDtoList
         } catch (ex: Exception) {
-            println("Failed to get all todos due to todo due to ${ex}")
-
-            throw ex
+            throw GeneralException(
+                    message = ex.message ?: "Failed to get all todos with order ${sortOrder}"
+            )
         }
     }
 
     override fun deleteTodoById(id: String) {
 
-        try {
-            val existingTodo: TodoModel =
-                    todoRepository.findById(id).orElseThrow {
-                        NotFoundException(message = "Todo not found with ${id})")
-                    }
-            todoRepository.delete(existingTodo)
-        } catch (ex: Exception) {
-            println("Failed to delete todo due to ${ex}")
-
-            throw ex
-        }
+        val existingTodo: TodoModel =
+                todoRepository.findById(id).orElseThrow {
+                    NotFoundException(message = "Todo not found with ${id})")
+                }
+        todoRepository.delete(existingTodo)
     }
 
     override fun deleteAllTodos() {

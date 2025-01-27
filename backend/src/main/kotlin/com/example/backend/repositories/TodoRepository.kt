@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TodoRepository : MongoRepository<TodoModel, String> {
     fun findAllByOrderByTextAsc(): Optional<List<TodoModel>>
-    fun findAllByOrderByTextDesc():  Optional<List<TodoModel>>
+    fun findAllByOrderByTextDesc(): Optional<List<TodoModel>>
     fun findByText(text: String): Optional<TodoModel>
 }

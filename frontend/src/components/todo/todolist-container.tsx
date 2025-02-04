@@ -1,6 +1,5 @@
 import {
   ArrowDownUp,
-  ArrowUpAz,
   ArrowUpDown,
   Moon,
   PlusCircle,
@@ -9,7 +8,6 @@ import {
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { TodoListView } from "./todolist-view";
-import { generateRandomId } from "../../utils/utils";
 
 import { Todo } from "../../types/todo.type";
 
@@ -177,13 +175,17 @@ export const TodoListContainer = ({
 
   return (
     <section
+      data-testid="todo-container"
       className={`min-h-screen ${
         currentTheme === THEME_MODE.dark
           ? "bg-gray-600 text-white"
           : "bg-gray-200 text-black"
       } flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8`}
     >
-      <article
+      <h1 className="text-2xl font-bold  text-center">TO DO LIST</h1>
+
+      <button
+        data-testid="theme-btn"
         className="flex items-center space-x-4 mb-4 "
         onClick={() =>
           setThemeMode(
@@ -193,9 +195,8 @@ export const TodoListContainer = ({
           )
         }
       >
-        <h1 className="text-2xl font-bold  text-center">TO DO LIST</h1>
         {renderThemeIconBasedOnTheme()}
-      </article>
+      </button>
 
       {renderFilterSortingSection()}
 
@@ -206,6 +207,7 @@ export const TodoListContainer = ({
         <CustomSearchInput
           type="text"
           name="todo-list-text-input"
+          data-testid="todo-list-text-input"
           id="todo-list-text-input"
           placeholder="Add a new todo"
           className={`flex-grow border-[1px]  ${
@@ -250,6 +252,7 @@ export const TodoListContainer = ({
 
           <div className="flex justify-between items-center max-w-sm w-full mt-4">
             <button
+              data-testid="delete-all-btn"
               onClick={handleDeleteAll}
               className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600"
             >

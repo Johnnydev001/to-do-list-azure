@@ -7,4 +7,5 @@ export type SearchInputType = {
   onChange: (event: any) => void;
   onKeyDown?: (event: any) => void;
   value: string;
+  "data-testid": string;
 };

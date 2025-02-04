@@ -6,8 +6,13 @@ services:
       context: /backend
       dockerfile: dockerfile
     ports:
-      - 8000:8000
+      - 8080:8080
+    env_file:
+      - /backend/.env
+
   frontend:
+    depends_on:
+      - backend
     image: frontend
     container_name: frontend
     build:
@@ -15,3 +20,5 @@ services:
       dockerfile: dockerfile
     ports:
       - "5173:5173"
+    env_file:
+      - /frontend/.env

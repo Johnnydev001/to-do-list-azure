@@ -34,8 +34,6 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 	implementation("me.paulschwarz:spring-dotenv:4.0.0")
-	implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.2.1")
-	implementation("org.mongodb:bson-kotlinx:5.2.1")
 }
 
 kotlin {

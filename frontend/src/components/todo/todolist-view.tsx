@@ -14,7 +14,7 @@ export const TodoListView = ({
   const renderTodoListItems = () => {
     return todoList?.map((todo) => (
       <li
-        data-testid={todo.id}
+        data-test-id={todo.id}
         key={todo.id}
         className={`flex flex-col sm:flex-row sm:items-center justify-between  ${
           currentTheme === THEME_MODE.light
@@ -32,7 +32,10 @@ export const TodoListView = ({
   };
 
   return (
-    <ul data-testid="todo-list" className="grid space-y-2 max-w-sm w-full max-h-56 overflow-y-auto">
+    <ul
+      data-testid="todo-list"
+      className="grid space-y-2 max-w-sm w-full max-h-56 overflow-y-auto"
+    >
       {renderTodoListItems()}
     </ul>
   );

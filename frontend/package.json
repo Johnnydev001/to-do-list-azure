@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "unit-test": "vitest",
+    "e2e-test": "npx playwright test"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

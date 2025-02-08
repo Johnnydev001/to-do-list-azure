@@ -144,6 +144,7 @@ export const TodoListContainer = ({
           <CustomSearchInput
             type="text"
             name="todo-list-search-text-input"
+            data-testid="todo-list-search-text-input"
             id="todo-list-search-text-input"
             placeholder="Search todo and click enter"
             className={`flex-grow border-[1px]  ${
@@ -252,7 +253,9 @@ export const TodoListContainer = ({
 
           <div className="flex justify-between items-center max-w-sm w-full mt-4">
             <button
-              data-testid="delete-all-btn"
+              data-testid="delete-all"
+              role="button"
+              name="Delete all"
               onClick={handleDeleteAll}
               className="space-x-2 p-2 text-white rounded-md flex items-center justify-center cursor-pointer text-center bg-red-700 hover:bg-red-600"
             >

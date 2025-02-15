@@ -1,6 +1,6 @@
 services:
   backend:
-    image: backend
+    image: backend:latest
     container_name: backend
     build:
       context: /backend
@@ -13,7 +13,7 @@ services:
   frontend:
     depends_on:
       - backend
-    image: frontend
+    image: frontend:latest
     container_name: frontend
     build:
       context: ./frontend

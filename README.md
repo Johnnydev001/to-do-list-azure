@@ -4,7 +4,7 @@
 This application was built in order to develop new skills, as a full-stack developer, by going through the different technical areas required for creating an app: UI design, frontend development, backend development, CI/CD and QA.
 
 I idealized it to be the simplest possible so I would have the freedom and ease to create the architecture, decide which technologies to use, and learn along the way.
-Consisting of a to-do list application, the user can perform simple actions like registering, sorting, and searching items.
+Consisting of a to-do list application, the user can perform simple actions like registering, sorting, searching items and change the theme.
 
 ## Technologies:
 
@@ -50,7 +50,7 @@ Run frontend and backend as standalone applications:
 - **Frontend**
 ````
 cd frontend
-npm I
+npm i
 npm run dev
 ````
 

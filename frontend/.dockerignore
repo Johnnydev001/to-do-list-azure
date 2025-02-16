@@ -3,3 +3,4 @@ dist
 dockerfile
 compose.yml
 .dockerignore
+.env
